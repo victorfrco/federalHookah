@@ -45,7 +45,8 @@
 
                     ],
                     ['link' => route('admin.clients.index'), 'title' => 'Clientes'],
-                    ['link' => route('admin.providers.index'), 'title' => 'Fornecedores']
+                    ['link' => route('admin.providers.index'), 'title' => 'Fornecedores'],
+                    ['link' => route('estoque'), 'title' => 'Estoque']
                 ];
             }
             else{
