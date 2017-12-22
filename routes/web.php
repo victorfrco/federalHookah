@@ -11,10 +11,10 @@
 |
 */
 
-
 use App\Models\Category;
 use App\Models\Order;
 
+Route::get('/removeItem','SellController@removeItem')->name('removeItem');
 Route::post('/addProducts', 'SellController@addProducts');
 Route::post('/criarMesa', 'SellController@criarMesa');
 Route::post('/cancelarVenda', 'SellController@cancelarVenda');
