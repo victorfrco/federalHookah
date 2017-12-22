@@ -18,7 +18,7 @@ class Sell extends Model
                                 <th>Quantidade</th>
                                 <th>Valor Unid.</th>
                                 <th>Valor Total</th>
-                                <th>&times;</th>
+                                <th style="text-align: center">'.Icon::remove().'</th>
                             </tr>';
         $tableCont = [];
         foreach ($itens as $item){
@@ -34,7 +34,7 @@ class Sell extends Model
                                 <td align="right">'.$item->qtd.'</td>
                                 <td align="right">'.$price.'</td>
                                 <td align="right">'.number_format((float)$item->total, 2, '.', '').'</td>
-                                <td align="center">'.Button::link('&nbsp'.Icon::remove())->asLinkTo(route('removeItem', ['item' => $item])).'</td>
+                                <td align="center">'.Button::link(Icon::remove())->asLinkTo(route('removeItem', ['item' => $item])).'</td>
                             </tr>';
             array_push($tableCont, $tupla);
         }
