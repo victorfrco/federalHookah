@@ -14,6 +14,8 @@
 use App\Models\Category;
 use App\Models\Order;
 
+Route::post('/admin/generateReport', 'ReportController@generateReport');
+Route::get('/admin/report', 'ReportController@index')->name('report');
 Route::post('/admin/addStock', 'ProductController@addStock');
 Route::get('/admin/stock', 'ProductController@stock')->name('estoque');
 Route::get('/removeItem','SellController@removeItem')->name('removeItem');

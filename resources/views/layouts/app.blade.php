@@ -38,7 +38,7 @@
                             ],
                             Navigation::NAVIGATION_DIVIDER,
                             [
-                               'link' => '#',
+                               'link' => route('report'),
                                'title' => 'Relatórios'
                             ],
                          ]
