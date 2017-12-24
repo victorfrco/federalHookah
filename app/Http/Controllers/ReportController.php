@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use \Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function view;
 
 class ReportController extends Controller
 {
@@ -13,7 +14,9 @@ class ReportController extends Controller
 
     public function generateReport(Request $request){
         $date = $request->toArray()['date'];
-        $this->buscaDadosPorData($date);
+        $dados = $this->buscaDadosPorData($date);
+
+        return view('admin.reports.show', compact('dados'));
     }
 
 	private function buscaDadosPorData($date) {
@@ -41,8 +44,26 @@ class ReportController extends Controller
 		$dados['vlrTotalDeVendasCanceladas'] = DB::table('orders')->where('status', '=', 1)
 		                                                ->whereDate('created_at','=', $date)->sum('total');
 
+		$dados['qtdVendasDinheiro'] = DB::table('orders')->where('pay_method', '=', 0)
+		                                ->whereDate('created_at','=', $date)->count();
+		$dados['vlrVendasDinheiro'] = DB::table('orders')->where('pay_method', '=', 0)
+		                                ->whereDate('created_at','=', $date)->sum('total');
 
 
-		dd($dados);
+		$dados['qtdVendasDebito'] = DB::table('orders')->where('pay_method', '=', 1)
+		                                ->whereDate('created_at','=', $date)->count();
+		$dados['vlrVendasDebito'] = DB::table('orders')->where('pay_method', '=', 1)
+		                              ->whereDate('created_at','=', $date)->sum('total');
+
+
+		$dados['qtdVendasCredito'] = DB::table('orders')->where('pay_method', '=', 2)
+		                               ->whereDate('created_at','=', $date)->count();
+		$dados['vlrVendasCredito'] = DB::table('orders')->where('pay_method', '=', 2)
+		                               ->whereDate('created_at','=', $date)->sum('total');
+
+		$dados['vendasPorUsuario'] = DB::table('orders')->select('id', 'total', 'pay_method')->get();
+
+//		return dd($dados);
+		return $dados;
 	}
 }
