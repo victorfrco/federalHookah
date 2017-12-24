@@ -20,21 +20,57 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th>Status</th>
-        <th>Quantidade</th>
-        <th>Valor Total</th>
+        <th width="40%">Status</th>
+        <th width="40%">Quantidade</th>
+        <th width="20%">Valor Total</th>
     </tr>
     </thead>
     <tbody>
     <tr>
         <th>Total</th>
         <td>{{$dados['totalDeVendas']}}</td>
-        <td>{{$dados['vlrTotalDeVendas']}}</td>
+        <td>R$ {{number_format((float)$dados['vlrTotalDeVendas'], 2, '.', '')}}</td>
     </tr>
     <tr>
         <th>Em Aberto</th>
         <td>{{$dados['totalDeVendasEmAberto']}}</td>
-        <td>{{$dados['vlrTotalDeVendasEmAberto']}}</td>
+        <td>R$ {{number_format((float)$dados['vlrTotalDeVendasEmAberto'], 2, '.', '')}}</td>
+    </tr>
+    <tr>
+        <th>Finalizadas</th>
+        <td>{{$dados['totalDeVendasFinalizadas']}}</td>
+        <td>R$ {{number_format((float)$dados['vlrTotalDeVendasFinalizadas'], 2, '.', '')}}</td>
+    </tr>
+    <tr>
+        <th>Canceladas</th>
+        <td>{{$dados['totalDeVendasCanceladas']}}</td>
+        <td>R$ {{number_format((float)$dados['vlrTotalDeVendasCanceladas'], 2, '.', '')}}</td>
+    </tr>
+    </tbody>
+</table>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th width="40%">Forma de Pagamento</th>
+        <th width="40%">Quantidade</th>
+        <th width="20%">Valor Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>Dinheiro</th>
+        <td>{{$dados['qtdVendasDinheiro']}}</td>
+        <td>R$ {{number_format((float)$dados['vlrVendasDinheiro'], 2, '.', '')}}</td>
+    </tr>
+    <tr>
+        <th>Débito</th>
+        <td>{{$dados['qtdVendasDebito']}}</td>
+        <td>R$ {{number_format((float)$dados['vlrVendasDebito'], 2, '.', '')}}</td>
+    </tr>
+    <tr>
+        <th>Crédito</th>
+        <td>{{$dados['qtdVendasCredito']}}</td>
+        <td>R$ {{number_format((float)$dados['vlrVendasCredito'], 2, '.', '')}}</td>
     </tr>
     </tbody>
 </table>

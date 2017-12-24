@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.4.36 on 2017-12-22.
+ * Generated for Laravel 5.4.36 on 2017-12-24.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -13262,6 +13262,86 @@ namespace Bootstrapper\Facades {
         }
          
     }
+
+    class Carousel {
+        
+        /**
+         * Names the carousel
+         *
+         * @param string $name The name of the carousel
+         * @return $this 
+         * @static 
+         */ 
+        public static function named($name)
+        {
+            return \Bootstrapper\Carousel::named($name);
+        }
+        
+        /**
+         * Set the control icons or text
+         *
+         * @param string $previousButton Left arrorw, previous text
+         * @param string $nextButton right arrow, next string
+         * @return \Bootstrapper\this 
+         * @static 
+         */ 
+        public static function withControls($previousButton, $nextButton)
+        {
+            return \Bootstrapper\Carousel::withControls($previousButton, $nextButton);
+        }
+        
+        /**
+         * Sets the contents of the carousel
+         *
+         * @param array $contents The new contents. Should be an array of arrays,
+         *                        with the inner keys being "image", "alt" and
+         *                        (optionally) "caption"
+         * @return $this 
+         * @static 
+         */ 
+        public static function withContents($contents)
+        {
+            return \Bootstrapper\Carousel::withContents($contents);
+        }
+        
+        /**
+         * Renders the carousel
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function render()
+        {
+            return \Bootstrapper\Carousel::render();
+        }
+        
+        /**
+         * Set the attributes of the object
+         *
+         * @param array $attributes The attributes to use
+         * @return $this 
+         * @static 
+         */ 
+        public static function withAttributes($attributes)
+        {
+            //Method inherited from \Bootstrapper\RenderedObject            
+            return \Bootstrapper\Carousel::withAttributes($attributes);
+        }
+        
+        /**
+         * Adds the given classes to attributes
+         *
+         * @param array $classes
+         * @return $this 
+         * @static 
+         */ 
+        public static function addClass($classes)
+        {
+            //Method inherited from \Bootstrapper\RenderedObject            
+            return \Bootstrapper\Carousel::addClass($classes);
+        }
+         
+    }
  
 }
 
@@ -16387,6 +16467,8 @@ namespace  {
     class Modal extends \Bootstrapper\Facades\Modal {}
 
     class Alert extends \Bootstrapper\Facades\Alert {}
+
+    class Carousel extends \Bootstrapper\Facades\Carousel {}
 
     class Html extends \Collective\Html\HtmlFacade {}
 
