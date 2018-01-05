@@ -42,6 +42,14 @@ class DatabaseSeeder extends Seeder
             'name' =>'Diversos',
             'description' => 'Produtos diversos vendidos avulsos, como Trident, Balas, Dichavadores, Sedas, etc...'
         ]);
+		
+		DB::table('brands')->insert([
+            'name' =>'Heineken',
+            'description' => 'Be Legacy!',
+            'logo_path' => 'https://seeklogo.com/images/S/stella-artois-logo-04BFEE2241-seeklogo.com.png',
+            'status' => 1,
+            'category_id' => 1
+        ]);
 
         DB::table('brands')->insert([
             'name' =>'Stella Artois',
@@ -68,7 +76,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('brands')->insert([
-            'name' =>'Guaraná Antarctica',
+            'name' =>'Guarana Antarctica',
             'description' => 'O original do Brasil',
             'logo_path' => 'https://pedidodaweb.com.br/upload/1501087688-GUARANA.png',
             'status' => 1,
@@ -153,7 +161,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('brands')->insert([
-            'name' =>'Doces & Aperitivos',
+            'name' =>'Doces e Aperitivos',
             'logo_path' => 'http://newflashmotel.com.br/public/imagens/cardapio/diversos.png',
             'status' => 1,
             'category_id' => 4
@@ -173,20 +181,6 @@ class DatabaseSeeder extends Seeder
             'logo_path' => 'http://www.makebrandz.com/wp-content/uploads/2015/01/Premium-Quality-02_300x162.png',
             'status' => 1,
             'category_id' => 2
-        ]);
-
-        DB::table('brands')->insert([
-            'name' =>'Mazaya 2',
-            'logo_path' => 'https://misternarguile.com.br/wp-content/uploads/2016/11/Mazaya-1.png',
-            'status' => 1,
-            'category_id' => 3
-        ]);
-
-        DB::table('brands')->insert([
-            'name' =>'Mazaya 3',
-            'logo_path' => 'https://misternarguile.com.br/wp-content/uploads/2016/11/Mazaya-1.png',
-            'status' => 1,
-            'category_id' => 3
         ]);
 
 	    DB::table('brands')->insert([
@@ -212,7 +206,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 4,
             'price_discount' => 3.75,
             'qtd' => '200',
-            'brand_id' => 2
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -222,7 +216,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 8,
             'price_discount' => 7.60,
             'qtd' => '100',
-            'brand_id' => 2
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -232,7 +226,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 3,
             'price_discount' => 3,
             'qtd' => '150',
-            'brand_id' => 5
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -242,7 +236,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 3,
             'price_discount' => 3,
             'qtd' => '150',
-            'brand_id' => 6
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -252,7 +246,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 5,
             'price_discount' => 5,
             'qtd' => '50',
-            'brand_id' => 6
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -262,7 +256,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 10,
             'price_discount' => 10,
             'qtd' => '50',
-            'brand_id' => 7
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -272,7 +266,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 12,
             'price_discount' => 12,
             'qtd' => '50',
-            'brand_id' => 8
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -282,7 +276,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 12,
             'price_discount' => 12,
             'qtd' => '50',
-            'brand_id' => 9
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -292,7 +286,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 15,
             'price_discount' => 15,
             'qtd' => '50',
-            'brand_id' => 10
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -302,7 +296,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 70,
             'price_discount' => 70,
             'qtd' => '10',
-            'brand_id' => 10
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -312,7 +306,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 25,
             'price_discount' => 25,
             'qtd' => '50',
-            'brand_id' => 11
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -322,7 +316,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 55,
             'price_discount' => 55,
             'qtd' => '10',
-            'brand_id' => 11
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -332,7 +326,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 55,
             'price_discount' => 55,
             'qtd' => '25',
-            'brand_id' => 12
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -342,7 +336,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 150,
             'price_discount' => 150,
             'qtd' => '15',
-            'brand_id' => 13
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -352,7 +346,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 75,
             'price_discount' => 75,
             'qtd' => '50',
-            'brand_id' => 14
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -362,7 +356,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 120,
             'price_discount' => 120,
             'qtd' => '10',
-            'brand_id' => 14
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -372,7 +366,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 10,
             'price_discount' => 10,
             'qtd' => '50',
-            'brand_id' => 15
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -382,7 +376,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 10,
             'price_discount' => 10,
             'qtd' => '50',
-            'brand_id' => 16
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -392,7 +386,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 15,
             'price_discount' => 15,
             'qtd' => '1000',
-            'brand_id' => 19
+            'brand_id' => 1
         ]);
 
         DB::table('products')->insert([
@@ -402,7 +396,7 @@ class DatabaseSeeder extends Seeder
             'price_resale' => 25,
             'price_discount' => 25,
             'qtd' => '1000',
-            'brand_id' => 20
+            'brand_id' => 1
         ]);
 
         DB::table('clients')->insert([
