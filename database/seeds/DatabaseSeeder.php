@@ -46,7 +46,7 @@ class DatabaseSeeder extends Seeder
 		DB::table('brands')->insert([
             'name' =>'Heineken',
             'description' => 'Open your World!',
-            'logo_path' => 'storage/images/brands/Heineken.jpg',
+            'logo_path' => 'storage/images/brands/Heineken.png',
             'status' => 1,
             'category_id' => 1
         ]);

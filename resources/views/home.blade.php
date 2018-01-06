@@ -25,7 +25,7 @@
         </div>
         <div class="row" style="text-align: right">
             {!! Form::open(array('action' => 'SellController@codBarra', 'method' => 'post', 'style' => 'display:inline')) !!}
-            {!! Form::search('product_barcode',null,['placeholder' => 'Código do produto...', 'class' => 'btn', 'style' => 'text-align:left; width:300px; color: #ffffff; background-color:#000000; border:thik; border-color:#C8B90C', 'id' => 'codBar']) !!}
+            {!! Form::search('product_barcode',null,['placeholder' => 'Código do produto...', 'class' => 'btn', 'style' => 'text-align:left; width:300px; color: #ffffff; background-color:#000000; border:thik; border-color:#10c413', 'id' => 'codBar']) !!}
             {!! Form::button(Icon::barcode(), ['type'=>'submit', 'class' => 'btn btn-primary']) !!}
             @isset($order)
                    {!! Form::hidden('order_id', $order->id) !!}
@@ -40,7 +40,7 @@
             @endif
         </div>
         <div class="row">
-            <div class="col-xs-7 col-sm-6 col-lg-8" style="background: -webkit-gradient(linear, left top, left bottom, from(#000000), to(#515151)); overflow: auto; margin-left:-61px; border: solid; border-width: 1px; height: 450px;" id="tabsCategorias" data-url="<?= route('admin.categories.create') ?>">
+            <div class="col-xs-7 col-sm-6 col-lg-8" style="background-image: url({{asset('storage/images/brands/listaEsquerda.jpg')}}); overflow: auto; margin-left:-61px; border: solid; border-width: 1px; height: 450px;" id="tabsCategorias" data-url="<?= route('admin.categories.create') ?>">
                 @php
                     foreach($categories as $category){
                         $brands = App\Models\Brand::all()->where('category_id', '=', $category->id);
@@ -66,7 +66,7 @@
                 @endphp
                 {!! Tabbable::withContents($names) !!}
             </div>
-            <div class="col-xs-5 col-sm-6 col-lg-5" style="background: -webkit-gradient(linear, left top, left bottom, from(#000000), to(#515151)); margin-right:-40px; border: solid; border-width: 1px; height: 450px; overflow: auto">
+            <div class="col-xs-5 col-sm-6 col-lg-5" style="background-image: url({{asset('storage/images/brands/listaDireita.jpg')}}); margin-right:-40px; border: solid; border-width: 1px; height: 450px; overflow: auto">
                 @if(isset($order))
                         <div align="center" style="border-bottom: solid; border-width: 1px; border-color: #2F3133"> Produtos de {{$order->client->name}}</div>
                         {!! $tabela = App\Models\Sell::atualizaTabelaDeItens($order->id)!!}
