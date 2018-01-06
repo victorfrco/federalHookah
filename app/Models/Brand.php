@@ -21,7 +21,7 @@ class Brand extends Model implements TableInterface
       if($brand->logo_path != null)
         $divCont = substr($brand->name,0, 17).Image::circle(asset($brand->logo_path), 'rounded')
                                     ->responsive()
-                                    ->withAttributes(['style' => 'height:110px; padding-left:7px']);
+                                    ->withAttributes(['style' => 'background-color: #ffffff;height:110px;']);
       else
       	$divCont = $brand->name.Image::circle(asset('storage/images/brands/nobrand.gif'), 'rounded')
                        ->responsive()

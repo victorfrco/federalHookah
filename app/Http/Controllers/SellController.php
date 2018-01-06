@@ -318,9 +318,10 @@ class SellController extends Controller
     public function concluirVenda(Request $request){
         $order = Order::find($request->toArray()['order_id']);
         $order->pay_method = $request->toArray()['formaPagamento'];
+
         $order->status = $this->STATUS_PAGA;
         $order->save();
-        return Redirect::to('/home')->with('message', 'Venda realizada com sucesso!');
+        return Redirect::to('/home')->with('vendaRealizada', 'Venda realizada com sucesso!');
     }
 
     public function cancelarVenda(Request $request){

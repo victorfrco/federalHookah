@@ -65,6 +65,7 @@
     </style>
 </head>
 <body>
+<img src="{{asset('storage/images/brands/giphy.gif')}}" style="width: 1400px; height:770px ;position: fixed; padding-left: 0px; ">
 <div class="flex-center position-ref full-height">
     @if (Route::has('login'))
         <div class="top-right links">
@@ -77,8 +78,9 @@
     @endif
 
     <div class="content">
-        <div class="title m-b-md">
+        <div class="title m-b-md" style="font-size: 110px;">
             Federal Hookah Pub
+
         </div>
     </div>
 </div>

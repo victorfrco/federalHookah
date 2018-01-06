@@ -46,10 +46,16 @@ class ReportController extends Controller
 		                                                ->whereDate('created_at','=', $date)->sum('total');
 
 
-		$dados['totalDeVendasEmAberto'] = DB::table('orders')->where('status', '=', 2)
-		                                          ->whereDate('created_at','=', $date)->count();
-		$dados['vlrTotalDeVendasEmAberto'] = DB::table('orders')->where('status', '=', 2)
-		                                                ->whereDate('created_at','=', $date)->sum('total');
+        $dados['totalDeMesasEmAberto'] = DB::table('orders')->where('status', '=', 2)
+            ->whereDate('created_at','=', $date)->count();
+        $dados['vlrTotalDeVendasEmAberto'] = DB::table('orders')->where('status', '=', 2)
+            ->whereDate('created_at','=', $date)->sum('total');
+
+
+        $dados['totalDeVendasEmAberto'] = DB::table('orders')->where('status', '=', 4)
+            ->whereDate('created_at','=', $date)->count();
+        $dados['vlrTotalDeVendasEmAberto'] = DB::table('orders')->where('status', '=', 4)
+            ->whereDate('created_at','=', $date)->sum('total');
 
 
 		$dados['totalDeVendasCanceladas'] = DB::table('orders')->where('status', '=', 1)

@@ -26,8 +26,16 @@
             <table class="table table-bordered">
                 <tbody>
                 <tr>
-                    <th scope="row">#</th>
+                    <th scope="row">Id</th>
                     <td>{{$product->id}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Categoria</th>
+                    <td>{{\App\Models\Category::find(\App\Models\Brand::find($product->brand_id)->id)->name}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Marca</th>
+                    <td>{{\App\Models\Brand::find($product->brand_id)->name}}</td>
                 </tr>
                 <tr>
                     <th scope="row">Nome</th>
@@ -38,12 +46,12 @@
                     <td>{{$product->description}}</td>
                 </tr>
                 <tr>
-                    <th scope="row">Preço</th>
-                    <td>{{$product->price_resale}}</td>
+                    <th scope="row">Preço / Associado</th>
+                    <td>R${{number_format((float)$product->price_resale, 2, '.', '')}} / R${{number_format((float)$product->price_discount, 2, '.', '')}} </td>
                 </tr>
                 <tr>
                     <th scope="row">Preço de Custo</th>
-                    <td>{{$product->price_cost}}</td>
+                    <td>R${{number_format((float)$product->price_cost, 2, '.', '')}}</td>
                 </tr>
                 <tr>
                     <th scope="row">Quantidade em Estoque</th>

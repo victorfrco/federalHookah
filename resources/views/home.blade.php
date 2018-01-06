@@ -19,6 +19,12 @@
             <strong>Ops!</strong> Produto com estoque negativo, <a href="{{route('estoque')}}" class="alert-link">clique aqui </a>caso queira aumentar seu estoque.
         </div>
     @endif
+    @if (session('vendaRealizada'))
+        <div class="alert alert-success" style="position:fixed; width: 40%; margin-left: 30%; z-index:9999;">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Ok!</strong> Venda realizada com sucesso!
+        </div>
+    @endif
     <div class="container">
         <div class="col-xs-7 col-sm-6 col-lg-7"  style="margin-left:-90px; margin-right: 130px; margin-bottom: 10px;">
             {!! \Bootstrapper\Facades\Button::primary('Nova Mesa')->withAttributes(['data-toggle' => 'modal', 'data-target' => '#novaMesaModal']) !!}
@@ -175,7 +181,6 @@
                             echo Form::hidden('order_id', $order->id);
                         }
                     @endphp
-                    {!! Form::token() !!}
                 </div>
                 <div class="modal-footer">
                     {!! Form::submit('Concluir!', array('class' => 'btn btn-success')) !!}
