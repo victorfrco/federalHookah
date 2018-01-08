@@ -25,13 +25,14 @@
             {!! form($formDelete) !!}
             <table class="table table-bordered">
                 <tbody>
+                {{--{!! dd($product) !!}--}}
                 <tr>
                     <th scope="row">Id</th>
                     <td>{{$product->id}}</td>
                 </tr>
                 <tr>
                     <th scope="row">Categoria</th>
-                    <td>{{\App\Models\Category::find(\App\Models\Brand::find($product->brand_id)->id)->name}}</td>
+                    <td>{{\App\Models\Category::find(\App\Models\Brand::find($product->brand_id)->category_id)->name}}</td>
                 </tr>
                 <tr>
                     <th scope="row">Marca</th>
