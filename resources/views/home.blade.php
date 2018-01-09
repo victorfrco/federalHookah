@@ -3,7 +3,8 @@
 @section('content')
     @if (session('inexistente'))
         @php
-            $order = session('inexistente');
+            if(session('inexistente')->exists)
+                $order = session('inexistente');
         @endphp
         <div class="alert alert-danger" style="position:fixed; width: 40%; margin-left: 30%; z-index:9999;">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -12,7 +13,8 @@
     @endif
     @if (session('semEstoque'))
         @php
-            $order = session('semEstoque');
+            if(session('semEstoque')->exists)
+                $order = session('semEstoque');
         @endphp
         <div class="alert alert-warning" style="position:fixed; width: 60%; margin-left: 20%; z-index:9999;">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>

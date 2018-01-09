@@ -229,8 +229,11 @@ class SellController extends Controller
 					return redirect()->back()->with('semEstoque', $order)->with(compact('order'));
 	    }else{
 		    if(array_key_exists( 'order_id' , $request->toArray()))
-			    $order = Order::find( $request->toArray()['order_id']);
-	    	return redirect()->back()->with('inexistente', $order)->with(compact('order'));
+			    $order = Order::find( $request->toArray()['order_id'])->get();
+		    if($order->exists())
+		    	return redirect()->back()->with('inexistente', $order)->with(compact('order'));
+			else
+				return redirect()->back()->with('inexistente', '');
 	    }
 	    if(array_key_exists( 'order_id' , $request->toArray()))
 		    $order = Order::find( $request->toArray()['order_id']);
