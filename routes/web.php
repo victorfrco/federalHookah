@@ -14,6 +14,7 @@
 use App\Models\Category;
 use App\Models\Order;
 
+Route::any('/searchProduct', 'ProductController@search');
 Route::post('/associado','SellController@aplicarRemoverDesconto');
 Route::post('/admin/generateReport', 'ReportController@generateReport');
 Route::get('/admin/report', 'ReportController@index')->name('report');

@@ -8,6 +8,7 @@ use function compact;
 use function dd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use function route;
 use function view;
 
@@ -152,5 +153,18 @@ class ProductController extends Controller
         $product->delete();
         session()->flash('message', 'Produto excluído com sucesso!');
         return redirect()->route('admin.products.index');
+    }
+
+    public function search(){
+	    $q = Input::get ( 'q' );
+	    if($q != ""){
+		    $products = Product::where ( 'name', 'LIKE', $q . '%' )->paginate (6)->setPath ( '' );
+		    $pagination = $products->appends ( array (
+			    'q' => Input::get ( 'q' )
+		    ) );
+		    if (count ( $products ) > 0)
+			    return view('admin.products.index', compact('products'));
+	    }
+	    return view ( 'admin.products.index' )->withMessage ( 'Nenhum produto encontrado!' );
     }
 }
