@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Forms\ProductForm;
 use App\Models\Product;
 use function compact;
+use function dd;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use function route;
 use function view;
 
@@ -40,7 +42,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(6);
+    	$products = Product::orderBy('name', 'asc')->paginate(6);
         return view('admin.products.index', compact('products'));
     }
 
