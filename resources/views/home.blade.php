@@ -34,7 +34,12 @@
         <div class="row" style="text-align: right">
             {!! Form::open(array('action' => 'SellController@codBarra', 'method' => 'post', 'style' => 'display:inline')) !!}
             {!! Form::search('product_barcode',null,['placeholder' => 'Código do produto...', 'class' => 'btn', 'style' => 'text-align:left; width:300px; color: #ffffff; background-color:#000000; border:thik; border-color:#10c413', 'id' => 'codBar']) !!}
-            {!! Form::button(Icon::barcode(), ['type'=>'submit', 'class' => 'btn btn-primary']) !!}
+            @if(isset($order))
+                {!! Form::button(Icon::barcode(), ['type'=>'submit', 'class' => 'btn btn-primary']) !!}
+            @else
+                {!! Form::button(Icon::barcode(), ['type'=>'submit', 'class' => 'btn btn-primary', 'disabled' => 'true']) !!}
+            @endif
+
             @isset($order)
                    {!! Form::hidden('order_id', $order->id) !!}
             @endisset
@@ -72,7 +77,11 @@
                          'content' => ''
                      ];
                 @endphp
-                {!! Tabbable::withContents($names) !!}
+                @if(isset($order))
+                    {!! Tabbable::withContents($names) !!}
+                @else
+                    <h4>Para iniciar uma venda clique em "Nova Mesa"!</h4>
+                @endif
             </div>
             <div class="col-xs-5 col-sm-6 col-lg-5" style="background-image: url({{asset('storage/images/brands/listaDireita.jpg')}}); margin-right:-40px; border: solid; border-width: 1px; height: 450px; overflow: auto">
                 @if(isset($order))
@@ -94,14 +103,19 @@
         <div class="col-xs-5 col-sm-6 col-lg-5" style="margin-top:-20px; margin-right: -60px; text-align:left;  display: inline;">
             <p style="margin-left: 10px; margin-top: -5px">Valor total da compra: <span style="font-size: 22px;  display: inline;">R$@if(isset($order)){{number_format((float)$order->total, 2, '.', '')}} @else 0,00 @endif </span></p>
             @php
-                if(isset($order)){
-                    echo Button::success('Concluir Venda')->addAttributes(['style' => 'margin-top:-18px; margin-left:25px;height:40px; width:210px', 'data-toggle' => 'modal', 'data-target' => '#concluirVendaModal']);
-                    echo Button::danger('Cancelar Venda')->addAttributes(['style' => 'margin-top:-18px; margin-right:-25px;margin-left:25px; height:40px; width:210px', 'data-toggle' => 'modal', 'data-target' => '#cancelarVendaModal']);
+                {{--Button::success('Concluir Venda')->addAttributes(['style' => 'margin-top:-18px; margin-left:25px;height:40px; width:210px', 'data-toggle' => 'modal', 'data-target' => '#concluirVendaModal']),--}}
+                 {{--Button::danger('Cancelar Venda')->addAttributes(['style' => 'margin-top:-18px; margin-right:-25px;margin-left:25px; height:40px; width:210px', 'data-toggle' => 'modal', 'data-target' => '#cancelarVendaModal']),--}}
+                    if(isset($order)){
+                        echo Bootstrapper\Facades\ButtonGroup::withContents([
+                             Button::success('Concluir Venda')->addAttributes(['style' => 'margin-top:-18px; width:150px ', 'data-toggle' => 'modal', 'data-target' => '#concluirVendaModal']),
+                             Button::primary('Parcial')->addAttributes(['style' => 'background-color :yellow; margin-top:-18px; width:130px', 'data-toggle' => 'modal', 'data-target' => '#vendaParcial']),
+                             Button::danger('Cancelar Venda')->addAttributes(['style' => 'margin-top:-18px;  width:150px; ', 'data-toggle' => 'modal', 'data-target' => '#cancelarVendaModal']),
+                        ])->withAttributes(['style' => 'margin-right: -20px; margin-left:25px']);
 
-                }else{
-                    echo Button::success('Concluir Venda')->addAttributes(['style' => 'margin-top:-18px; margin-left:25px; height:40px; width:210px', 'disabled' => 'true']);
-                    echo Button::danger('Cancelar Venda')->addAttributes(['style' => 'margin-top:-18px; margin-right:-25px;margin-left:25px; height:40px; width:210px', 'disabled' => 'true']);
-                }
+                    }else{
+                        echo Button::success('Concluir Venda')->addAttributes(['style' => 'margin-top:-18px; margin-left:25px; height:40px; width:210px', 'disabled' => 'true']);
+                        echo Button::danger('Cancelar Venda')->addAttributes(['style' => 'margin-top:-18px; margin-right:-25px;margin-left:25px; height:40px; width:210px', 'disabled' => 'true']);
+                    }
             @endphp
         </div>
     </div>
@@ -165,7 +179,35 @@
             </div>
         </div>
     </div>
-
+    <div data-keyboard="false" data-backdrop="static" class="modal fade" id="vendaParcial" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Venda Parcial</h4>
+                </div>
+                {!! Form::open(array('action' => 'SellController@vendaParcial', 'method' => 'post')) !!}
+                <div class="modal-body">
+                    <br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione a forma de pagamento: </p>
+                    {!! Form::select('formaPagamento', ['Dinheiro', 'Cartão de Débito', 'Cartão de Crédito'], null, ['class' => 'selectpicker'])  !!}
+                    <br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione os produtos a pagar: </p>
+                    @php
+                        if(isset($order)){
+                            $products = App\Http\Controllers\SellController::buscaProdutosPorVenda($order);
+                            echo $products;
+                            echo Form::hidden('order_id', $order->id);
+                        }else
+                        echo "Não existe pedido em aberto!";
+                    @endphp
+                </div>
+                <div class="modal-footer">
+                    {!! Form::submit('Concluir!', array('class' => 'btn btn-success')) !!}
+                    {!! Form::close() !!}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div data-keyboard="false" data-backdrop="static" class="modal fade" id="concluirVendaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

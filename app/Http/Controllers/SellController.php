@@ -8,8 +8,10 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Sell;
+use App\Models\PartialOrder;
 use function array_push;
 use Auth;
+use Bootstrapper\Facades\Modal;
 use function compact;
 use function dd;
 use Illuminate\Http\Request;
@@ -24,7 +26,8 @@ class SellController extends Controller
     private $STATUS_CANCELADA = 1;
     private $STATUS_MESA = 2;
     private $STATUS_PAGA = 3;
-    private $STATUS_EM_ABERTO = 4;
+	private $STATUS_EM_ABERTO = 4;
+	private $STATUS_PAGA_PARCIALMENTE = 5;
     /**
      * Display a listing of the resource.
      *
@@ -380,4 +383,92 @@ class SellController extends Controller
 	    $order->save();
     	return $order;
     }
+
+	public static function buscaProdutosPorVenda(Order $order)
+	{
+		$itens = Item::all()->where('order_id', '=', $order->id);
+		$divs = [];
+		$divHeader = '<table class="table table-bordered" style="font-size: 13px; color:black">
+                    <tr>
+                        <th style="text-align: center">Descrição</th>
+                        <th style="text-align: center">Quantidade</th>
+                        <th style="text-align: center">Valor Unidade</th>
+                        <th style="text-align: center">A Pagar</th>
+                    </tr>';
+		$divFooter = '<input name="_token" type="hidden" value="'. csrf_token().'"/></table>';
+		foreach ($itens as $item){
+			$product = Product::find($item->product_id);
+			$divCont = '<tr>
+                        <td>'.$product->name.'
+                        </td>
+                        <td style="text-align: center">'.$item->qtd.'
+                        </td>
+                        <td style="text-align: center">R$'.$item->total/$item->qtd.'
+                        </td>
+                        <td style="text-align: center; min-width: 170px" form="form-add-order">'.
+			           \Bootstrapper\Facades\Button::appendIcon(\Bootstrapper\Facades\Icon::plus())->withAttributes(
+				           ['class' => 'btn btn-xs', 'onclick' => "incrementaProduto($product->id)"]).
+			           '&nbsp;<input id="'.$product->id.'"  min="0" max="'.$item->qtd.'" style="width:60px" class="form" name="'.$item->id.'" type="number" value="0">&nbsp;'.
+			           \Bootstrapper\Facades\Button::appendIcon(\Bootstrapper\Facades\Icon::minus())->withAttributes(
+				           ['class' => 'btn btn-xs', 'onclick' => "decrementaProduto($product->id)"]).'
+                                
+                        </td>
+                        </tr>';
+			array_push($divs, $divCont);
+		}
+		$string = implode($divs);
+		$table = $divHeader.$string.$divFooter;
+
+		return $table;
+	}
+
+	public function vendaParcial(Request $request){
+		//verificar se o item só contem um produto, se for unico troca o order_id do item,
+		//     senão cria um novo item para essa order e subtrai a quantidade de produtos do item da ordem antiga
+		//
+		dd($request->toArray());
+		$orderOriginal = Order::find($request->get('order_id'));
+		$parcial = new PartialOrder();
+		$parcial->pay_method = $request->get('formaPagamento');
+		$parcial->status = 1;
+		$parcial->order_id = $orderOriginal->id;
+		$parcial->total = 0;
+		$parcial->save();
+		foreach ($request->toArray() as $item => $quantidade){
+			if($item != "_token" && $item != "order_id" && $item != "formaPagamento") {
+				$itemOriginal = Item::find($item);
+				$valorDoItem = $itemOriginal->total / $itemOriginal->qtd;
+				if($itemOriginal->qtd > $quantidade){
+
+					$itemOriginal->qtd -= $quantidade;
+					$itemOriginal->total = $itemOriginal->qtd * $valorDoItem;
+
+					$itemDerivado = new Item();
+					$itemDerivado->qtd = $quantidade;
+					$itemDerivado->total = $quantidade * $valorDoItem;
+					$itemDerivado->order_id = $parcial->id;
+
+					$itemOriginal->save();
+					$itemDerivado->save();
+
+					$parcial->total += $itemDerivado->total;
+				} else{
+					//item aponta para a partialOrder
+					$itemOriginal->order_id = $parcial->id;
+					$itemOriginal->save();
+				}
+			}
+			$parcial->save();
+			$orderOriginal->status = $this->STATUS_PAGA_PARCIALMENTE;
+			$orderOriginal->total -= $itemDerivado->total;
+			$orderOriginal->save();
+		}
+		//
+		//verificar o valor total de cada order de acordo com a quantidade de produtos de cada item
+
+		//setar forma de pagamento, e valor total da ordem derivada,
+		//
+		//verificar se a ordem de origem ainda possui itens, senão deve-se colocá-la como paga
+    	dd($request->toArray());
+	}
 }
