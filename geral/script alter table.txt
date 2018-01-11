@@ -1,0 +1,1 @@
+ALTER TABLE `orders` ADD `original_order` INT UNSIGNED NULL AFTER `id`;

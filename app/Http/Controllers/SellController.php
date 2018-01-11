@@ -427,16 +427,19 @@ class SellController extends Controller
 		//     senão cria um novo item para essa order e subtrai a quantidade de produtos do item da ordem antiga
 		
 		$orderOriginal = Order::find($request->get('order_id'));
-		$parcial = new PartialOrder();
+		$parcial = new Order();
 		//setar forma de pagamento, e valor total da ordem derivada,
 		$parcial->pay_method = $request->get('formaPagamento');
 		$parcial->total = 0;
 		$parcial->status = 1;
-		$parcial->order_id = $orderOriginal->id;
-		$parcial->save();
+		$parcial->client_id = $orderOriginal->client_id;
+		$parcial->user_id = $orderOriginal->user_id;
+		$parcial->associated = $orderOriginal->associated;
+		$parcial->original_order = $orderOriginal->id;
+
 		$totalItensRemovidos = 0;
 		foreach ($request->toArray() as $item => $quantidade){
-			if($item != "_token" && $item != "order_id" && $item != "formaPagamento") {
+			if($item != "_token" && $item != "order_id" && $item != "formaPagamento" && $quantidade != 0) {
 				$itemOriginal = Item::find($item);
 				$valorDoItem = $itemOriginal->total / $itemOriginal->qtd;
 				if($itemOriginal->qtd > $quantidade){
@@ -449,18 +452,21 @@ class SellController extends Controller
 					$itemDerivado->product_id = $itemOriginal->product_id;
 					$itemDerivado->qtd = $quantidade;
 					$itemDerivado->total = $quantidade * $valorDoItem;
+					$parcial->save();
 					$itemDerivado->order_id = $parcial->id;
 
-					$itemOriginal->save();
+					$itemOriginal->update();
 					$itemDerivado->save();
 					$totalItensRemovidos += $itemDerivado->total;
 
 					$parcial->total += $itemDerivado->total;
 				} else{
 					//item aponta para a partialOrder
+					$parcial->total += $itemOriginal->total;
+					$parcial->save();
 					$itemOriginal->order_id = $parcial->id;
 					$totalItensRemovidos += $itemOriginal->total;
-					$itemOriginal->save();
+					$itemOriginal->update();
 				}
 			}
 		}
