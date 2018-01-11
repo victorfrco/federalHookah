@@ -277,8 +277,8 @@ class SellController extends Controller
         }
         $order->total += $valorTotal;
         $order = Order::find($this->vinculaItensNoPedido($order, $items));
-        $categories = Category::all();
-        return view('home', compact('order', 'categories'));
+	    $categories = Category::all();
+	    return view('home', compact('order', 'categories'));
     }
 
     public function listaProdutosPorMarca($products = array())
@@ -425,50 +425,58 @@ class SellController extends Controller
 	public function vendaParcial(Request $request){
 		//verificar se o item só contem um produto, se for unico troca o order_id do item,
 		//     senão cria um novo item para essa order e subtrai a quantidade de produtos do item da ordem antiga
-		//
-		dd($request->toArray());
+		
 		$orderOriginal = Order::find($request->get('order_id'));
 		$parcial = new PartialOrder();
+		//setar forma de pagamento, e valor total da ordem derivada,
 		$parcial->pay_method = $request->get('formaPagamento');
+		$parcial->total = 0;
 		$parcial->status = 1;
 		$parcial->order_id = $orderOriginal->id;
-		$parcial->total = 0;
 		$parcial->save();
+		$totalItensRemovidos = 0;
 		foreach ($request->toArray() as $item => $quantidade){
 			if($item != "_token" && $item != "order_id" && $item != "formaPagamento") {
 				$itemOriginal = Item::find($item);
 				$valorDoItem = $itemOriginal->total / $itemOriginal->qtd;
 				if($itemOriginal->qtd > $quantidade){
 
+					//verificar o valor total de cada order de acordo com a quantidade de produtos de cada item
 					$itemOriginal->qtd -= $quantidade;
 					$itemOriginal->total = $itemOriginal->qtd * $valorDoItem;
 
 					$itemDerivado = new Item();
+					$itemDerivado->product_id = $itemOriginal->product_id;
 					$itemDerivado->qtd = $quantidade;
 					$itemDerivado->total = $quantidade * $valorDoItem;
 					$itemDerivado->order_id = $parcial->id;
 
 					$itemOriginal->save();
 					$itemDerivado->save();
+					$totalItensRemovidos += $itemDerivado->total;
 
 					$parcial->total += $itemDerivado->total;
 				} else{
 					//item aponta para a partialOrder
 					$itemOriginal->order_id = $parcial->id;
+					$totalItensRemovidos += $itemOriginal->total;
 					$itemOriginal->save();
 				}
 			}
-			$parcial->save();
-			$orderOriginal->status = $this->STATUS_PAGA_PARCIALMENTE;
-			$orderOriginal->total -= $itemDerivado->total;
-			$orderOriginal->save();
 		}
-		//
-		//verificar o valor total de cada order de acordo com a quantidade de produtos de cada item
-
-		//setar forma de pagamento, e valor total da ordem derivada,
-		//
+		$orderOriginal->total -= $totalItensRemovidos;
+		$parcial->save();
+		$orderOriginal->status = $this->STATUS_PAGA_PARCIALMENTE;
+		$orderOriginal->save();
+		
 		//verificar se a ordem de origem ainda possui itens, senão deve-se colocá-la como paga
-    	dd($request->toArray());
+		if(Item::all()->where('order_id', '=', $orderOriginal->id)->isEmpty()){
+			$orderOriginal->status = $this->STATUS_PAGA;
+			$orderOriginal->save();
+			return Redirect::to('/home')->with('vendaRealizada', 'Venda realizada com sucesso!');
+		}
+		$order = $orderOriginal;
+		$categories = Category::all();
+		return view('home', compact('order', 'categories'));
 	}
 }

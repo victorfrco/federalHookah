@@ -19,7 +19,7 @@ use function implode;
 class OrderController extends Controller
 {
     public function carregaPedidosAbertos(){
-        $pedidos = Order::all()->where('status','=', '2');
+        $pedidos = Order::all()->whereIn('status', [2,5]);
         $listaDeDivs = $this->criaListaPedidos($pedidos);
         return implode($listaDeDivs);
     }
