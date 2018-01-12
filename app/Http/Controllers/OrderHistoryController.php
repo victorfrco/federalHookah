@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Support\Facades\Input;
+use Table;
 
 class OrderHistoryController extends Controller
 {
@@ -38,7 +39,16 @@ class OrderHistoryController extends Controller
 		return view ( 'admin.history.index' )->withMessage('Nenhuma venda encontrada para "'.$q.'"...' );
 	}
 
-	public function buscaPagamentosDerivados(){
+	public static function exibeDetalhes(Order $order){
+		$dados = [];
+		$dados['dataDeCriacao'] = $order->getDataFormatada();
+		$dados['ultimaAtualizacao'] = $order->getUltimaAtualizacao();
+		$dados['possuiSubOrder'] = $order->verificaSubOrder($order);
+		$dados['usuarioResponsavel'] = $order->getNomeUsuario();
+		$dados['vlrTotal'] = $order->getValorTotal();
+		$dados['formaDePagamento'] = $order->getFormaDePagamento();
+		$dados['subOrders'] = $order->getSubOrders();
 
+		return $dados;
 	}
 }

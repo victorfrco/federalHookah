@@ -6,7 +6,7 @@
             {{ csrf_field() }}
             <div class="input-group">
                 <input type="text" class="form-control" name="q"
-                       placeholder="Busque por id ou vendedor..." autofocus>
+                       placeholder="Busque a venda por id..." autofocus>
                 <span class="input-group-btn">
                         <button type="submit" class="btn btn-default">
                             <span class="glyphicon glyphicon-search"></span>

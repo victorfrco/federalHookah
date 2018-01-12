@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Client;
+use App\User;
 use function array_add;
 use function array_merge;
 use function array_push;
@@ -61,7 +62,7 @@ class Order extends Model implements TableInterface
 				return $this->getFormaDePagamento();
 				break;
 			case 'Data':
-				return $this->getDataFormatada();
+				return $this->getUltimaAtualizacao();
 				break;
 			case 'Status':
 				return $this->getStatusFormatado();
@@ -101,7 +102,7 @@ class Order extends Model implements TableInterface
 		$subOrders = Order::all()->where('original_order','=', $original->id);
 		$itens = $itensOriginais->toArray();
 		// caso possua pagamentos parcelados
-		if($subOrders->count() > 0){
+		if($this->verificaSubOrder($original)){
 			foreach ($subOrders as $subOrder){
 				$itensSecundarios = Item::all()->where('order_id', '=', $subOrder->id)->toArray();
 				$itens = array_merge($itens,$itensSecundarios);
@@ -115,13 +116,17 @@ class Order extends Model implements TableInterface
 	}
 
 	public function getDataFormatada(){
+		$dataFormatada = new \DateTime($this->created_at);
+		return $dataFormatada->format('d/m/Y');
+	}
+
+	public function getUltimaAtualizacao(){
 		$dataFormatada = new \DateTime($this->updated_at);
 		return $dataFormatada->format('d/m/Y');
 	}
 
 	public function getFormaDePagamento(){
 		$original = $this->getOrderOriginal();;
-		$subOrders = Order::all()->where('original_order','=', $original->id);
 
 		$pagamentoFormatado = '';
 
@@ -138,7 +143,7 @@ class Order extends Model implements TableInterface
 		}
 
 		// caso possua pagamentos parcelados
-		if($subOrders->count() > 0){
+		if($this->verificaSubOrder($original)){
 			return 'Diversos';
 		}else
 			return $pagamentoFormatado;
@@ -163,4 +168,26 @@ class Order extends Model implements TableInterface
 				break;
 		}
 	}
+
+	public function verificaSubOrder(Order $order){
+		$subOrders = Order::all()->where('original_order','=', $order->id);
+		if($subOrders->count() > 0)
+			return true;
+		else
+			return false;
+	}
+
+	public function getNomeUsuario(){
+		$user = User::find($this->user_id);
+		return $user->name;
+	}
+
+	public function getSubOrders() {
+		$orders = Order::all()->where( 'original_order', '=', $this->id );
+		if($orders->count() > 0)
+			return $orders;
+		else
+			return null;
+	}
+
 }
