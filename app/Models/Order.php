@@ -117,12 +117,12 @@ class Order extends Model implements TableInterface
 
 	public function getDataFormatada(){
 		$dataFormatada = new \DateTime($this->created_at);
-		return $dataFormatada->format('d/m/Y');
+		return $dataFormatada->format('d/m/Y H:i');
 	}
 
 	public function getUltimaAtualizacao(){
 		$dataFormatada = new \DateTime($this->updated_at);
-		return $dataFormatada->format('d/m/Y');
+		return $dataFormatada->format('d/m/Y H:i');
 	}
 
 	public function getFormaDePagamento(){
@@ -198,4 +198,20 @@ class Order extends Model implements TableInterface
 		return $cliente->nickname;
 	}
 
+	public function getFormaDePagamentoFormatada($pay_method){
+		$pagamentoFormatado = '';
+
+		switch ($pay_method){
+			case 0:
+				$pagamentoFormatado = 'Dinheiro';
+				break;
+			case 1:
+				$pagamentoFormatado = 'Débito';
+				break;
+			case 2:
+				$pagamentoFormatado = 'Crédito';
+				break;
+		}
+		return $pagamentoFormatado;
+	}
 }

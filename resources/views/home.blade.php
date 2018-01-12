@@ -104,11 +104,19 @@
             <p style="margin-left: 10px; margin-top: -5px">Valor total da compra: <span style="font-size: 22px;  display: inline;">R$@if(isset($order)){{number_format((float)$order->total, 2, ',', '')}} @else 0,00 @endif </span></p>
             @php
                  if(isset($order)){
-                    echo Bootstrapper\Facades\ButtonGroup::withContents([
-                         Button::success('Concluir Venda')->addAttributes(['style' => 'margin-top:-18px; width:150px ', 'data-toggle' => 'modal', 'data-target' => '#concluirVendaModal']),
-                         Button::primary('Parcial')->addAttributes(['style' => 'background-color :yellow; margin-top:-18px; width:130px', 'data-toggle' => 'modal', 'data-target' => '#vendaParcial']),
-                         Button::danger('Cancelar Venda')->addAttributes(['style' => 'margin-top:-18px;  width:150px; ', 'data-toggle' => 'modal', 'data-target' => '#cancelarVendaModal']),
-                    ])->withAttributes(['style' => 'margin-right: -20px; margin-left:25px']);
+                    $itens = App\Models\Item::all()->where('order_id', '=', $order->id);
+                    if($itens->count() > 0)
+                        echo Bootstrapper\Facades\ButtonGroup::withContents([
+                             Button::success('Concluir Venda')->addAttributes(['style' => 'margin-top:-18px; width:150px ', 'data-toggle' => 'modal', 'data-target' => '#concluirVendaModal']),
+                             Button::primary('Parcial')->addAttributes(['style' => 'background-color :yellow; margin-top:-18px; width:130px', 'data-toggle' => 'modal', 'data-target' => '#vendaParcial']),
+                             Button::danger('Cancelar Venda')->addAttributes(['style' => 'margin-top:-18px;  width:150px; ', 'data-toggle' => 'modal', 'data-target' => '#cancelarVendaModal']),
+                        ])->withAttributes(['style' => 'margin-right: -20px; margin-left:25px']);
+                    else
+                        echo Bootstrapper\Facades\ButtonGroup::withContents([
+                             Button::success('Concluir Venda')->addAttributes(['style' => 'margin-top:-18px; width:150px ', 'data-toggle' => 'modal', 'data-target' => '#concluirVendaModal', 'disabled' => 'true']),
+                             Button::primary('Parcial')->addAttributes(['style' => 'background-color :yellow; margin-top:-18px; width:130px', 'data-toggle' => 'modal', 'data-target' => '#vendaParcial', 'disabled' => 'true']),
+                             Button::danger('Cancelar Venda')->addAttributes(['style' => 'margin-top:-18px;  width:150px; ', 'data-toggle' => 'modal', 'data-target' => '#cancelarVendaModal']),
+                        ])->withAttributes(['style' => 'margin-right: -20px; margin-left:25px']);
 
                 }else{
                    echo Bootstrapper\Facades\ButtonGroup::withContents([

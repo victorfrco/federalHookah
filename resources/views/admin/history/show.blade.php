@@ -20,7 +20,7 @@
                     $contentOriginal = '<ul><li><u> Data :</u> '.$order->getUltimaAtualizacao().'</li>
                                 <li><u> Venda Realizada por:</u> '.$order->getNomeUsuario().'</li>
                                 <li><u> Valor Pago:</u> R$'.number_format((float)$order->total, 2, ',', '').'</li>
-                                <li><u> Forma de Pagamento:</u> '.$order->getFormaDePagamento().'</li>
+                                <li><u> Forma de Pagamento:</u> '.$order->getFormaDePagamentoFormatada($order->pay_method).'</li>
                                 </ul>';
                     $itensOriginais = App\Http\Controllers\OrderController::itensFormatados($order->id);
                     $contentsOriginais = [];
