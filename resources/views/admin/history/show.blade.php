@@ -25,7 +25,7 @@
                     $itensOriginais = App\Http\Controllers\OrderController::itensFormatados($order->id);
                     $contentsOriginais = [];
                     foreach ($itensOriginais as $item){
-                        $contentItensOriginais = $item[1] .' - ' . $item[0]. '<br>' ;
+                        $contentItensOriginais = $item[1] .' ' . $item[0]. ' - R$'.number_format((float)$item[2], 2, ',', '').'<br>' ;
                         array_push($contentsOriginais, $contentItensOriginais);
                     }
                     $tabelaItensOriginais = Bootstrapper\Facades\Accordion::withContents([
@@ -45,7 +45,7 @@
                     $itens = App\Http\Controllers\OrderController::itensFormatados($subOrder->id);
                     $contents = [];
                     foreach ($itens as $item){
-                        $contentItens = $item[1] .' - ' . $item[0]. '<br>' ;
+                        $contentItens = $item[1] .' - ' . $item[0]. ' - R$'.number_format((float)$item[2], 2, ',', '').'<br>' ;
                         array_push($contents, $contentItens);
                     }
                     $tabelaItens = Bootstrapper\Facades\Accordion::withContents([

@@ -53,6 +53,7 @@ class OrderController extends Controller
 		    $product = Product::find($item->product_id);
 		    $p[0] = $product->name;
 		    $p[1] = $item->qtd;
+		    $p[2] = $item->total / $item->qtd;
 		    array_push($produtoQtd, $p);
 		}
 		return $produtoQtd;
