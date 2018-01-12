@@ -101,7 +101,7 @@
             @endphp
         </div>
         <div class="col-xs-5 col-sm-6 col-lg-5" style="margin-top:-20px; margin-right: -60px; text-align:left;  display: inline;">
-            <p style="margin-left: 10px; margin-top: -5px">Valor total da compra: <span style="font-size: 22px;  display: inline;">R$@if(isset($order)){{number_format((float)$order->total, 2, '.', '')}} @else 0,00 @endif </span></p>
+            <p style="margin-left: 10px; margin-top: -5px">Valor total da compra: <span style="font-size: 22px;  display: inline;">R$@if(isset($order)){{number_format((float)$order->total, 2, ',', '')}} @else 0,00 @endif </span></p>
             @php
                  if(isset($order)){
                     echo Bootstrapper\Facades\ButtonGroup::withContents([

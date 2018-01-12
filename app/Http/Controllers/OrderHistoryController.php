@@ -48,6 +48,9 @@ class OrderHistoryController extends Controller
 		$dados['vlrTotal'] = $order->getValorTotal();
 		$dados['formaDePagamento'] = $order->getFormaDePagamento();
 		$dados['subOrders'] = $order->getSubOrders();
+		$dados['nomeCliente'] = $order->getNomeCliente();
+		$dados['apelidoCliente'] = $order->getApelidoCliente();
+
 
 		return $dados;
 	}

@@ -46,12 +46,13 @@ class OrderController extends Controller
         return $lista;
     }
 
-    public function itensFormatados($order_id){
+    public static function itensFormatados($order_id){
     	$produtoQtd = [];
 	    $itens = Item::all()->where('order_id', '=', $order_id);
 	    foreach ( $itens as $item ) {
 		    $product = Product::find($item->product_id);
-		    $p = [$product->name => $product->qtd];
+		    $p[0] = $product->name;
+		    $p[1] = $item->qtd;
 		    array_push($produtoQtd, $p);
 		}
 		return $produtoQtd;

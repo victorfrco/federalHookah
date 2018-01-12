@@ -126,11 +126,9 @@ class Order extends Model implements TableInterface
 	}
 
 	public function getFormaDePagamento(){
-		$original = $this->getOrderOriginal();;
-
 		$pagamentoFormatado = '';
 
-		switch ($original->pay_method){
+		switch ($this->pay_method){
 			case 0:
 				$pagamentoFormatado = 'Dinheiro';
 				break;
@@ -143,7 +141,7 @@ class Order extends Model implements TableInterface
 		}
 
 		// caso possua pagamentos parcelados
-		if($this->verificaSubOrder($original)){
+		if($this->verificaSubOrder($this)){
 			return 'Diversos';
 		}else
 			return $pagamentoFormatado;
@@ -188,6 +186,16 @@ class Order extends Model implements TableInterface
 			return $orders;
 		else
 			return null;
+	}
+
+	public function getNomeCliente() {
+		$cliente = Client::find($this->client_id);
+		return $cliente->name;
+	}
+
+	public function getApelidoCliente() {
+		$cliente = Client::find($this->client_id);
+		return $cliente->nickname;
 	}
 
 }
