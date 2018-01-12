@@ -48,7 +48,7 @@ class ReportController extends Controller
 
         $dados['totalDeMesasEmAberto'] = DB::table('orders')->where('status', '=', 2)
             ->whereDate('created_at','=', $date)->count();
-        $dados['vlrTotalDeVendasEmAberto'] = DB::table('orders')->where('status', '=', 2)
+        $dados['vlrTotalDeMesasEmAberto'] = DB::table('orders')->where('status', '=', 2)
             ->whereDate('created_at','=', $date)->sum('total');
 
 
@@ -84,6 +84,7 @@ class ReportController extends Controller
 		                               ->join('users', 'orders.user_id', '=', 'users.id')
 		                               ->select(DB::raw('users.name as user_id, sum(orders.total) as vlr, count(*) as qtd'))
 		                               ->where('orders.status','=',3)
+		                               ->where('orders.total','>',0)
 		                               ->whereDate('orders.created_at', '=', $date)
 		                               ->groupBy('users.name')
 		                               ->get();
@@ -93,6 +94,7 @@ class ReportController extends Controller
 		                          ->join('products', 'itens.product_id', '=', 'products.id')
 		                          ->select(DB::raw('products.name as nome, count(*) as qtd'))
 		                          ->where('orders.status', '=', 3)
+		                          ->where('orders.total','>',0)
 		                          ->whereDate('orders.created_at','=', $date)
 		                          ->groupBy('products.name')
 		                          ->orderByDesc('qtd')

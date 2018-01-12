@@ -9,7 +9,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Item;
 use App\Models\Order;
+use App\Models\Product;
 use function array_push;
 use function asort;
 use Button;
@@ -42,5 +44,18 @@ class OrderController extends Controller
             array_push($lista, $div);
         }
         return $lista;
+    }
+
+    public static function itensFormatados($order_id){
+    	$produtoQtd = [];
+	    $itens = Item::all()->where('order_id', '=', $order_id);
+	    foreach ( $itens as $item ) {
+		    $product = Product::find($item->product_id);
+		    $p[0] = $product->name;
+		    $p[1] = $item->qtd;
+		    $p[2] = $item->total / $item->qtd;
+		    array_push($produtoQtd, $p);
+		}
+		return $produtoQtd;
     }
 }

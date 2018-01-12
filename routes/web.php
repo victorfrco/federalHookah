@@ -65,9 +65,13 @@ Route::prefix('admin')->group(function(){
         Route::resource('products','ProductController');
         Route::resource('clients','ClientController');
         Route::resource('sells', 'SellController');
-        Route::resource('providers', 'ProviderController');
+	    Route::resource('providers', 'ProviderController');
     });
 });
+
+Route::any('/searchOrderHistory', 'OrderHistoryController@search');
+Route::get('/history', 'OrderHistoryController@index')->name('history');
+Route::get('/historyDetail', 'OrderHistoryController@show')->name('historyDetail');
 Route::get('/upload', 'BrandController@upload');
 Route::post('/move', 'BrandController@move')->name('move');
 Route::get('/home', 'HomeController@index')->name('home');
