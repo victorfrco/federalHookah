@@ -147,7 +147,7 @@ class SellController extends Controller
         $order->save();
 
         $categories = Category::all();
-        return view('home', compact('order', 'categories'));
+        return redirect('home')->with(compact('order', 'categories'));
     }
 
     public function vinculaItensNoPedido(Order $pedido, array $itens)
@@ -184,59 +184,52 @@ class SellController extends Controller
     public function codBarra(Request $request){
     	$product = $request->get('product_barcode');
     	$product = Product::where('barcode', '=', $product)->first();
-	    $order = new Order();
 	    if($product != null){
 	    	$product->qtd--;
-	    	$product->save();
-	        if(array_key_exists( 'order_id' , $request->toArray()))
-			    $order = Order::find( $request->toArray()['order_id']);
-	        else {
-			    $order->client_id = 1;
-			    $order->total = 0;
-			    $order->status = $this->STATUS_MESA;
-			    $order->associated = 0;
-			    $order->user_id = Auth::user()->id;
-			    $order->save();
-	        }
-				//verifica se ja existe um item com esse produto nesse pedido;
-			    $item = Item::where('order_id', '=', $order->id)->where('product_id','=', $product->id)->first();
-				if($item != null) {
-					//adiciona mais 1 quantidade do produto ao item;
+	    	$product->update();
+		    $order = Order::find( $request->toArray()['order_id']);
 
-					$item->qtd ++;
-					if($order->associated) {
-						$item->total += $product->price_discount;
-						$order->total += $product->price_discount;
-					}
-					else {
-						$item->total += $product->price_resale;
-						$order->total += $product->price_resale;
-					}
-					$item->save();
-					$order->save();
+			//verifica se ja existe um item com esse produto nesse pedido;
+		    $item = Item::where('order_id', '=', $order->id)->where('product_id','=', $product->id)->first();
+		    if($product->qtd <= 0)
+			    return redirect()->back()->with('semEstoque', $order)->with(compact('order'));
+		    if($item != null) {
+				//adiciona mais 1 quantidade do produto ao item;
+
+				$item->qtd ++;
+				if($order->associated) {
+					$item->total += $product->price_discount;
+					$order->total += $product->price_discount;
 				}
-				else{
-					$item = new Item();
-					$item->product_id = $product->id;
-					if($order->associated == 0)
-						$item->total = $product->price_resale;
-					else
-						$item->total = $product->price_discount;
-					$item->qtd = 1;
-					$item->order_id = $order->id;
-					$item->save();
-					$order->total += $item->total;
-					$order->save();
+				else {
+					$item->total += $product->price_resale;
+					$order->total += $product->price_resale;
 				}
-				if($product->qtd <= 0)
-					return redirect()->back()->with('semEstoque', $order)->with(compact('order'));
+				$item->update();
+				$order->update();
+			}
+			else{
+				$item = new Item();
+				$item->product_id = $product->id;
+				if($order->associated == 0)
+					$item->total = $product->price_resale;
+				else
+					$item->total = $product->price_discount;
+				$item->qtd = 1;
+				$item->order_id = $order->id;
+				$item->save();
+				$order->total += $item->total;
+				$order->update();
+			}
 	    }else{
-		    if(array_key_exists( 'order_id' , $request->toArray()))
-			    $order = Order::find( $request->toArray()['order_id'])->get();
-		    if($order->exists())
-		    	return redirect()->back()->with('inexistente', $order)->with(compact('order'));
-			else
-				return redirect()->back()->with('inexistente', '');
+		    if(array_key_exists( 'order_id' , $request->toArray())) {
+			    $order = Order::find( $request->toArray()['order_id'] )->first();
+			    if ( $order->exists() ) {
+				    return redirect()->back()->with( 'inexistente', $order )->with( compact( 'order' ) );
+			    } else {
+				    return redirect()->back()->with( 'inexistente', '' );
+			    }
+		    }
 	    }
 	    if(array_key_exists( 'order_id' , $request->toArray()))
 		    $order = Order::find( $request->toArray()['order_id']);

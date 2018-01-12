@@ -17,7 +17,6 @@ class Brand extends Model implements TableInterface
 
       $divCab =  '<div value="'.$id.'" data-id="'.$id.'" data-target="#productModal" data-toggle="modal" class="col-sm-2 product-modal" style="width: 145px; height: 145px; font-size: 12px; font-weight:bold; text-align: center;">';
       $brand = Brand::find($id);
-
       if($brand->logo_path != null)
         $divCont = substr($brand->name,0, 17).Image::circle(asset($brand->logo_path), 'rounded')
                                     ->responsive()

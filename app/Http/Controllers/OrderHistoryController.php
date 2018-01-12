@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use Request;
+use Illuminate\Support\Facades\Input;
 
 class OrderHistoryController extends Controller
 {
@@ -25,6 +25,18 @@ class OrderHistoryController extends Controller
 		return view('admin.history.show', compact('order'));
 	}
 
+	public function search(){
+		$q = Input::get ( 'q' );
+		if($q != ""){
+			$orders = Order::where ( 'id', 'LIKE', $q . '%' )->paginate (6)->setPath ( '' );
+			$pagination = $orders->appends ( array (
+				'q' => Input::get ( 'q' )
+			) );
+			if (count ( $orders ) > 0)
+				return view('admin.history.index', compact('orders'));
+		}
+		return view ( 'admin.history.index' )->withMessage('Nenhuma venda encontrada para "'.$q.'"...' );
+	}
 
 	public function buscaPagamentosDerivados(){
 

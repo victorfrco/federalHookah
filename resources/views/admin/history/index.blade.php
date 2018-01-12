@@ -2,6 +2,20 @@
 
 @section('content')
     <div class="container">
+        <form action="/searchOrderHistory" method="POST" role="search">
+            {{ csrf_field() }}
+            <div class="input-group">
+                <input type="text" class="form-control" name="q"
+                       placeholder="Busque por id ou vendedor..." autofocus>
+                <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+            </div>
+        </form>
+    </div>
+    <div class="container">
         <div class="row">
             @if(isset($orders))
                 {!! Table::withContents($orders->items())
