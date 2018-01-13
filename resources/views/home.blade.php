@@ -128,7 +128,6 @@
             @endphp
         </div>
     </div>
-
     <div data-keyboard="false" data-backdrop="static" class="modal fade" id="productModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -150,7 +149,6 @@
             </div>
         </div>
     </div>
-
     <div data-keyboard="false" data-backdrop="static" class="modal fade" id="novaMesaModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -198,7 +196,7 @@
                 {!! Form::open(array('action' => 'SellController@vendaParcial', 'method' => 'post')) !!}
                 <div class="modal-body">
                     <br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione a forma de pagamento: </p>
-                    {!! Form::select('formaPagamento', ['Dinheiro', 'Cartão de Débito', 'Cartão de Crédito', 'Variada'], null, ['class' => 'selectpicker'])  !!}
+                    {!! Form::select('formaPagamento', ['Selecione...', 'Dinheiro', 'Cartão de Débito', 'Cartão de Crédito', 'Múltiplo'], null, ['class' => 'selectpicker'])  !!}
                     <br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione os produtos a pagar: </p>
                     @php
                         if(isset($order)){
@@ -227,8 +225,17 @@
                 {!! Form::open(array('action' => 'SellController@concluirVenda', 'method' => 'post')) !!}
                 <div class="modal-body">
                     <br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione a forma de pagamento: </p>
-                    {!! Form::select('formaPagamento', ['Dinheiro', 'Cartão de Débito', 'Cartão de Crédito'], null, ['class' => 'selectpicker'])  !!}
-
+                    <select class="" id="formaPagamento" name="formaPagamento" style="width: 212px;" onclick='test()'>
+                        <option value="0">Selecione...</option>
+                        <option value="1">Dinheiro</option>
+                        <option value="2">Cartão de Débito</option>
+                        <option value="3">Cartão de Crédito</option>
+                        <option value="4">Múltiplo</option>
+                    </select>
+                    <div id="obs" style="display: none; width:500px">
+                        Informe uma observação:
+                        <textarea name="obs" style="width:500px"></textarea>
+                    </div>
                     @php
                         if(isset($order)){
                             echo Form::hidden('order_id', $order->id);
@@ -243,7 +250,6 @@
             </div>
         </div>
     </div>
-
     <div data-keyboard="false" data-backdrop="static" class="modal fade" id="cancelarVendaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -270,7 +276,6 @@
             </div>
         </div>
     </div>
-
     <div data-keyboard="false" data-backdrop="static" class="modal fade" id="confirmarAssociadoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -297,7 +302,6 @@
             </div>
         </div>
     </div>
-
     <div data-keyboard="false" data-backdrop="static" class="modal fade" id="removerAssociadoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -324,10 +328,8 @@
             </div>
         </div>
     </div>
-
     <meta name="_token" content="{!! csrf_token() !!}" />
     <script src="{{asset('js/ajax-crud.js')}}"></script>
-
 @endsection
 @section('scripts')
     <script>
@@ -344,6 +346,14 @@
             e.preventDefault();
             window.location = $('#tabsCategorias').attr('data-url');
         });
+
+        function test() {
+            if (document.getElementById('formaPagamento').value === '4') {
+                document.getElementById('obs').style.display = 'block';
+            } else {
+                document.getElementById('obs').style.display = 'none';
+            }
+        }
 
     </script>
     <!-- Latest compiled and minified CSS -->

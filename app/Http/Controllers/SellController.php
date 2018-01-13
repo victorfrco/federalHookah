@@ -318,6 +318,8 @@ class SellController extends Controller
         $order = Order::find($request->toArray()['order_id']);
         $order->pay_method = $request->toArray()['formaPagamento'];
 
+        if($order->pay_method == 4)
+            $order->obs = $request->toArray()['obs'];
         $order->status = $this->STATUS_PAGA;
         $order->save();
         return Redirect::to('/home')->with('vendaRealizada', 'Venda realizada com sucesso!');

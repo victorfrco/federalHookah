@@ -205,15 +205,21 @@ class Order extends Model implements TableInterface
 		$pagamentoFormatado = '';
 
 		switch ($pay_method){
-			case 0:
-				$pagamentoFormatado = 'Dinheiro';
-				break;
-			case 1:
+            case 0:
+                $pagamentoFormatado = 'Não Informado';
+                break;
+            case 1:
+                $pagamentoFormatado = 'Dinheiro';
+                break;
+			case 2:
 				$pagamentoFormatado = 'Débito';
 				break;
-			case 2:
-				$pagamentoFormatado = 'Crédito';
-				break;
+            case 3:
+                $pagamentoFormatado = 'Crédito';
+                break;
+            case 4:
+                $pagamentoFormatado = 'Múltiplo';
+                break;
 		}
 		return $pagamentoFormatado;
 	}
