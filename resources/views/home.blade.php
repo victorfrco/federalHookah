@@ -198,7 +198,7 @@
                 {!! Form::open(array('action' => 'SellController@vendaParcial', 'method' => 'post')) !!}
                 <div class="modal-body">
                     <br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione a forma de pagamento: </p>
-                    {!! Form::select('formaPagamento', ['Dinheiro', 'Cartão de Débito', 'Cartão de Crédito'], null, ['class' => 'selectpicker'])  !!}
+                    {!! Form::select('formaPagamento', ['Dinheiro', 'Cartão de Débito', 'Cartão de Crédito', 'Variada'], null, ['class' => 'selectpicker'])  !!}
                     <br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione os produtos a pagar: </p>
                     @php
                         if(isset($order)){
