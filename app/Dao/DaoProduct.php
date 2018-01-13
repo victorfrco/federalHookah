@@ -8,7 +8,10 @@
 
 namespace App\Dao;
 
-
+/**
+ * Class DaoProduct
+ * @package App\Dao
+ */
 class DaoProduct
 {
     /**
@@ -17,5 +20,8 @@ class DaoProduct
      */
     public function buscaProdutoMaisVendido($dataInicial, $dataFinal = null){
 
+        if(isset($dataFinal)){
+
+        }
     }
 }

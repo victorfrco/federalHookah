@@ -2,6 +2,10 @@
 
 namespace App\Dao;
 
+/**
+ * Class DaoOrder
+ * @package App\Dao
+ */
 class DaoOrder
 {
     /**
@@ -10,6 +14,10 @@ class DaoOrder
      */
     public function buscaTotalDeVendas($dataInicial, $dataFinal = null){
 
+
+        if(isset($dataFinal)){
+
+        }
     }
 
     /**
@@ -19,6 +27,10 @@ class DaoOrder
      */
     public function buscaVendasPorFormaDePagamento($dataInicial, $formaDePagamento, $dataFinal = null){
 
+
+        if(isset($dataFinal)){
+
+        }
     }
 
 }
