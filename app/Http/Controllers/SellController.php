@@ -361,6 +361,8 @@ class SellController extends Controller
 		    $item->save();
 		    $total += $item->total;
 	    }
+	    $pago = OrderController::valorPago($order);
+        $total -= $pago;
 	    $order->total = $total;
 
         return $order;
