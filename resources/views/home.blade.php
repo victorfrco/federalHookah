@@ -101,7 +101,13 @@
             @endphp
         </div>
         <div class="col-xs-5 col-sm-6 col-lg-5" style="margin-top:-20px; margin-right: -60px; text-align:left;  display: inline;">
-            <p style="margin-left: 10px; margin-top: -5px">Valor total da compra: <span style="font-size: 22px;  display: inline;">R$@if(isset($order)){{number_format((float)$order->total, 2, ',', '')}} @else 0,00 @endif </span></p>
+            <p style="margin-left: 10px; margin-top: -5px">Valor total da compra: <span style="font-size: 22px;  display: inline;">R$@if(isset($order)){{number_format((float)$order->total, 2, ',', '')}} @else 0,00 @endif </span>
+                @php
+                    if(isset($order))
+                        if(\App\Http\Controllers\OrderController::possuiPagamento($order))
+                            echo '(Pago R$'. \App\Http\Controllers\OrderController::valorPago($order).')';
+                @endphp
+            </p>
             @php
                  if(isset($order)){
                     $itens = App\Models\Item::all()->where('order_id', '=', $order->id);
@@ -195,17 +201,54 @@
                 </div>
                 {!! Form::open(array('action' => 'SellController@vendaParcial', 'method' => 'post')) !!}
                 <div class="modal-body">
-                    <br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione a forma de pagamento: </p>
-                    {!! Form::select('formaPagamento', ['Selecione...', 'Dinheiro', 'Cartão de Débito', 'Cartão de Crédito', 'Múltiplo'], null, ['class' => 'selectpicker'])  !!}
-                    <br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione os produtos a pagar: </p>
                     @php
-                        if(isset($order)){
+                    if(isset($order))
+                        if(\App\Http\Controllers\OrderController::possuiPagamento($order)){
+                        echo '<br><p style="display:inline; vertical-align: middle;font-weight: bold">Informe o valor a ser pago: </p>
+                    <select class="" id="formaPagamentoParcial" name="formaPagamento" style="width: 212px;" disabled="true">
+                        <option value="4">Múltiplo</option>
+                    </select>
+                    <div id="obsParcial" style="display: block; width:500px">';
+                        if(isset($order))
+                            echo 'Valor total pago: <input id="valorPago" name="valorPago" type="number" max="'.$order->total.'" step="0.01">
+                            <br>
+                        Informe uma observação:
+                        <textarea name="obsParcial" style="width:500px"></textarea>
+                    </div>
+                    <div id="produtosParciais">';
+                    if(isset($order)){
+                            echo Form::hidden('order_id', $order->id);
+                            echo Form::hidden('formaPagamento', 4);
+                        }else
+                        echo 'Não existe pedido em aberto!';
+                        }
+                        else{
+                        echo '<br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione a forma de pagamento: </p>
+                    <select class="" id="formaPagamentoParcial" name="formaPagamento" style="width: 212px;" onclick="parcial()">
+                        <option value="0">Selecione...</option>
+                        <option value="1">Dinheiro</option>
+                        <option value="2">Cartão de Débito</option>
+                        <option value="3">Cartão de Crédito</option>
+                        <option value="4">Múltiplo</option>
+                    </select>
+                    <div id="obsParcial" style="display: none; width:500px">';
+                        if(isset($order))
+                            echo 'Valor total pago: <input id="valorPago" name="valorPago" type="number" max="'.$order->total.'" step="0.01">
+                            <br>
+                        Informe uma observação:
+                        <textarea name="obsParcial" style="width:500px"></textarea>
+                    </div>
+                    <div id="produtosParciais">
+                    <br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione os produtos a pagar: </p>';
+                    if(isset($order)){
                             $products = App\Http\Controllers\SellController::buscaProdutosPorVenda($order);
                             echo $products;
                             echo Form::hidden('order_id', $order->id);
                         }else
-                        echo "Não existe pedido em aberto!";
+                        echo 'Não existe pedido em aberto!';
+                        }
                     @endphp
+                    </div>
                 </div>
                 <div class="modal-footer">
                     {!! Form::submit('Concluir!', array('class' => 'btn btn-success')) !!}
@@ -224,15 +267,20 @@
                 </div>
                 {!! Form::open(array('action' => 'SellController@concluirVenda', 'method' => 'post')) !!}
                 <div class="modal-body">
+
                     <br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione a forma de pagamento: </p>
-                    <select class="" id="formaPagamento" name="formaPagamento" style="width: 212px;" onclick='test()'>
+                    <select class="" id="formaPagamentoTotal" name="formaPagamento" style="width: 212px;" onclick='total()'>
                         <option value="0">Selecione...</option>
                         <option value="1">Dinheiro</option>
                         <option value="2">Cartão de Débito</option>
                         <option value="3">Cartão de Crédito</option>
                         <option value="4">Múltiplo</option>
                     </select>
-                    <div id="obs" style="display: none; width:500px">
+                    <div id="obsTotal" style="display: none; width:500px">
+                        @if(isset($order))
+                        Valor total pago: <input id="valorPago" name="valorPago" type="number" value="{{$order->total}}" disabled="true" step="0.01">
+                        <br>
+                        @endif
                         Informe uma observação:
                         <textarea name="obs" style="width:500px"></textarea>
                     </div>
@@ -347,11 +395,20 @@
             window.location = $('#tabsCategorias').attr('data-url');
         });
 
-        function test() {
-            if (document.getElementById('formaPagamento').value === '4') {
-                document.getElementById('obs').style.display = 'block';
+        function total() {
+            if (document.getElementById('formaPagamentoTotal').value === '4') {
+                document.getElementById('obsTotal').style.display = 'block';
             } else {
-                document.getElementById('obs').style.display = 'none';
+                document.getElementById('obsTotal').style.display = 'none';
+            }
+        }
+
+        function parcial() {
+            if (document.getElementById('formaPagamentoParcial').value === '4') {
+                document.getElementById('obsParcial').style.display = 'block';
+                document.getElementById('produtosParciais').style.display = 'none';
+            } else {
+                document.getElementById('obsParcial').style.display = 'none';
             }
         }
 

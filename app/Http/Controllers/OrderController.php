@@ -58,4 +58,29 @@ class OrderController extends Controller
 		}
 		return $produtoQtd;
     }
+
+    public static function possuiPagamento(Order $order){
+        $subOrders = $order->getSubOrders();
+        $possui = false;
+        if($subOrders != null && $subOrders->count() > 0){
+            foreach ($subOrders as $subOrder){
+                if($subOrder->pay_method == 4) {
+                    $possui = true;
+                }
+            }
+        }
+        return $possui;
+    }
+
+    public static function valorPago(Order $order){
+        $subOrders = $order->getSubOrders();
+        $total = 0;
+        if($subOrders != null && $subOrders->count() > 0){
+            foreach ($subOrders as $subOrder){
+                if($subOrder->pay_method = 4)
+                    $total += $subOrder->total;
+            }
+        }
+        return $total;
+    }
 }

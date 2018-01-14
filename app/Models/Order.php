@@ -141,6 +141,9 @@ class Order extends Model implements TableInterface
             case 3:
                 $pagamentoFormatado = 'Variado';
                 break;
+            case 4:
+                $pagamentoFormatado = 'Parcial';
+                break;
 		}
 
 		// caso possua pagamentos parcelados
