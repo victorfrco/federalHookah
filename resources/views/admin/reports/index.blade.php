@@ -9,7 +9,7 @@
            echo Bootstrapper\Facades\Accordion::named("basic")->withContents([
         [
             'title' => 'Relatório Sintético',
-           'contents' => 'Informe a data desejada:--}}
+           'contents' => 'Informe a data desejada:
                              '.Form::open(array('action' => 'ReportController@generateReport', 'method' => 'post')).''.
                          Form::date('date').'
                            <br><br>'.
