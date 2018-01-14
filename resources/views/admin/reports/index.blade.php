@@ -9,13 +9,13 @@
            echo Bootstrapper\Facades\Accordion::named("basic")->withContents([
         [
             'title' => 'Relatório Sintético',
-{{--            'contents' => 'Informe a data desejada:--}}
-{{--                             '.Form::open(array('action' => 'ReportController@generateReport', 'method' => 'post')).''.--}}
-{{--                             Form::date('date').'--}}
-{{--                             <br><br>'.--}}
-{{--                             Form::submit('Enviar', ['class' => 'btn btn-primary']).''.--}}
-{{--                             Form::close().'',--}}
-                'contents' => 'Em Desenvolvimento',
+           'contents' => 'Informe a data desejada:--}}
+                             '.Form::open(array('action' => 'ReportController@generateReport', 'method' => 'post')).''.
+                         Form::date('date').'
+                           <br><br>'.
+                            Form::submit('Enviar', ['class' => 'btn btn-primary']).''.
+                             Form::close().'',
+
              'style'=>''
         ],
         [
