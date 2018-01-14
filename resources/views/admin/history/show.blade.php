@@ -14,6 +14,9 @@
                     echo '<li><u> Forma de Pagamento:</u> '.$dados['formaDePagamento'].'</li>';
                     echo '</ul>';
 
+                    if($order->pay_method == 4)
+                         echo '<p><u> Observação:</u> '.$order->obs.'</p>';
+
                 if($dados['possuiSubOrder']){
                     $subOrders = [];
                     $cont = 2;
@@ -41,6 +44,10 @@
                     <li><u> Valor Pago:</u> R$'.number_format((float)$subOrder->total, 2, ',', '').'</li>
                     <li><u> Forma de Pagamento:</u> '.$subOrder->getFormaDePagamento().'</li>
                     </ul>';
+
+                    if($subOrder->pay_method == 4){
+                     $content = $content.'<p><u> Observação:</u> '.$subOrder->obs.'</p>';
+                    }
 
                     $itens = App\Http\Controllers\OrderController::itensFormatados($subOrder->id);
                     $contents = [];

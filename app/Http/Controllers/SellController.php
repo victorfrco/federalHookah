@@ -318,8 +318,11 @@ class SellController extends Controller
         $order = Order::find($request->toArray()['order_id']);
         $order->pay_method = $request->toArray()['formaPagamento'];
 
+        if($order->pay_method == 4)
+            $order->obs = $request->toArray()['obs'];
+
         $order->status = $this->STATUS_PAGA;
-        $order->save();
+        $order->update();
         return Redirect::to('/home')->with('vendaRealizada', 'Venda realizada com sucesso!');
     }
 
@@ -418,8 +421,8 @@ class SellController extends Controller
 	public function vendaParcial(Request $request){
 		//verificar se o item só contem um produto, se for unico troca o order_id do item,
 		//     senão cria um novo item para essa order e subtrai a quantidade de produtos do item da ordem antiga
-		
-		$orderOriginal = Order::find($request->get('order_id'));
+
+        $orderOriginal = Order::find($request->get('order_id'));
 		$parcial = new Order();
 		//setar forma de pagamento, e valor total da ordem derivada,
 		$parcial->pay_method = $request->get('formaPagamento');
@@ -430,9 +433,34 @@ class SellController extends Controller
 		$parcial->associated = $orderOriginal->associated;
 		$parcial->original_order = $orderOriginal->id;
 
+        if($parcial->pay_method == 4) {
+            $parcial->total = $request->toArray()['valorPago'];
+            $parcial->obs = $request->toArray()['obsParcial'];
+            $orderOriginal->total -= $parcial->total;
+            if($orderOriginal->total < 1)
+                $orderOriginal->status = $this->STATUS_PAGA;
+            else
+                $orderOriginal->status = $this->STATUS_PAGA_PARCIALMENTE;
+
+            if($orderOriginal->total < 1){
+                $orderOriginal->status = $this->STATUS_PAGA;
+                $orderOriginal->update();
+                $parcial->save();
+                $categories = Category::all();
+                return view('home', compact('order', 'categories'));
+            }
+            $orderOriginal->update();
+            $parcial->save();
+
+            $order = $orderOriginal;
+            $categories = Category::all();
+            return view('home', compact('order', 'categories'));
+
+        }
+
 		$totalItensRemovidos = 0;
 		foreach ($request->toArray() as $item => $quantidade){
-			if($item != "_token" && $item != "order_id" && $item != "formaPagamento" && $quantidade != 0) {
+			if($item != "valorPago" && $item != "obsParcial" && $item != "_token" && $item != "order_id" && $item != "formaPagamento" && $quantidade != 0) {
 				$itemOriginal = Item::find($item);
 				$valorDoItem = $itemOriginal->total / $itemOriginal->qtd;
 				if($itemOriginal->qtd > $quantidade){
@@ -463,6 +491,7 @@ class SellController extends Controller
 				}
 			}
 		}
+
 		$orderOriginal->total -= $totalItensRemovidos;
 		$parcial->save();
 		$orderOriginal->status = $this->STATUS_PAGA_PARCIALMENTE;
@@ -474,7 +503,8 @@ class SellController extends Controller
 			$orderOriginal->save();
 			return Redirect::to('/home')->with('vendaRealizada', 'Venda realizada com sucesso!');
 		}
-		$order = $orderOriginal;
+
+        $order = $orderOriginal;
 		$categories = Category::all();
 		return view('home', compact('order', 'categories'));
 	}
