@@ -224,8 +224,8 @@
                         }
                         else{
                         echo '<br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione a forma de pagamento: </p>
-                    <select class="" id="formaPagamentoParcial" name="formaPagamento" style="width: 212px;" onclick="parcial()">
-                        <option value="0">Selecione...</option>
+                    <select class="" id="formaPagamentoParcial" required name="formaPagamento" style="width: 212px;" onclick="parcial()">
+                        <option value="">Selecione...</option>
                         <option value="1">Dinheiro</option>
                         <option value="2">Cartão de Débito</option>
                         <option value="3">Cartão de Crédito</option>
@@ -256,8 +256,7 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>
-        </div>
-    </div>
+        </div></div>
     <div data-keyboard="false" data-backdrop="static" class="modal fade" id="concluirVendaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -269,13 +268,22 @@
                 <div class="modal-body">
 
                     <br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione a forma de pagamento: </p>
-                    <select class="" id="formaPagamentoTotal" name="formaPagamento" style="width: 212px;" onclick='total()'>
-                        <option value="0">Selecione...</option>
+                    <select class="" id="formaPagamentoTotal" required name="formaPagamento" style="width: 212px;" onclick='troco();total();'>
+                        <option value="">Selecione...</option>
                         <option value="1">Dinheiro</option>
                         <option value="2">Cartão de Débito</option>
                         <option value="3">Cartão de Crédito</option>
                         <option value="4">Múltiplo</option>
                     </select>
+                    <div id="troco" style="display: none;">
+                        @if(isset($order))
+                        Valor da venda (R$): <input style="width: 90px" type="text" id="num1" value="{{$order->total}}" disabled="true" />
+                        <br>
+                        @endif
+                        Valor entregue: <input style="margin-left: 41px; width: 90px" type="text" id="num2" onblur="calcular();" />
+                        <br>
+                        <span id="resultado"></span>
+                    </div>
                     <div id="obsTotal" style="display: none; width:500px">
                         @if(isset($order))
                         Valor total pago: <input id="valorPago" name="valorPago" type="number" value="{{$order->total}}" disabled="true" step="0.01">
@@ -403,12 +411,41 @@
             }
         }
 
+        function troco() {
+            if (document.getElementById('formaPagamentoTotal').value === '1') {
+                document.getElementById('troco').style.display = 'block';
+            } else {
+                document.getElementById('troco').style.display = 'none';
+            }
+        }
+
         function parcial() {
             if (document.getElementById('formaPagamentoParcial').value === '4') {
                 document.getElementById('obsParcial').style.display = 'block';
                 document.getElementById('produtosParciais').style.display = 'none';
             } else {
                 document.getElementById('obsParcial').style.display = 'none';
+                document.getElementById('produtosParciais').style.display = 'block';
+            }
+
+            if (document.getElementById('formaPagamentoParcial').value === '1') {
+                document.getElementById('troco').style.display = 'block';
+            } else {
+                document.getElementById('troco').style.display = 'none';
+            }
+        }
+
+        function calcular() {
+            var num1 = Number(document.getElementById("num1").value);
+            var num2 = Number(document.getElementById("num2").value);
+            var elemResult = document.getElementById("resultado");
+            var sub = num2 - num1;
+
+            if (elemResult.textContent === undefined) {
+                elemResult.textContent = "Troco (R$): " + sub.toFixed(2) + "";
+            }
+            else { // IE
+                elemResult.innerText = "Troco (R$): " + sub.toFixed(2) + "";
             }
         }
 
