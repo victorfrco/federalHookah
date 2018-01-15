@@ -427,12 +427,6 @@
                 document.getElementById('obsParcial').style.display = 'none';
                 document.getElementById('produtosParciais').style.display = 'block';
             }
-
-            if (document.getElementById('formaPagamentoParcial').value === '1') {
-                document.getElementById('troco').style.display = 'block';
-            } else {
-                document.getElementById('troco').style.display = 'none';
-            }
         }
 
         function calcular() {
