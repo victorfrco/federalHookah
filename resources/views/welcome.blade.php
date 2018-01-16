@@ -65,7 +65,7 @@
     </style>
 </head>
 <body>
-<img src="{{asset('storage/images/brands/giphy.gif')}}" style="width: 1400px; height:770px ;position: fixed; padding-left: 0px; ">
+<img src="{{asset('storage/images/brands/giphy.gif')}}" style="width: 100%; height:100% ;position: fixed; padding-left: 0px; ">
 <div class="flex-center position-ref full-height">
     @if (Route::has('login'))
         <div class="top-right links">
