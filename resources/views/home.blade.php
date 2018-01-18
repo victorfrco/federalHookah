@@ -29,11 +29,11 @@
     @endif
     <div class="container">
         <div class="col-xs-7 col-sm-6 col-lg-7"  style="margin-left:-90px; margin-right: 130px; margin-bottom: 10px;">
-            {!! \Bootstrapper\Facades\Button::primary('Nova Mesa')->withAttributes(['data-toggle' => 'modal', 'data-target' => '#novaMesaModal']) !!}
+            {!! \Bootstrapper\Facades\Button::primary('Nova Venda')->withAttributes(['class'=>'botao', 'data-toggle' => 'modal', 'data-target' => '#novaMesaModal']) !!}
         </div>
         <div class="row" style="text-align: right">
             {!! Form::open(array('action' => 'SellController@codBarra', 'method' => 'post', 'style' => 'display:inline')) !!}
-            {!! Form::search('product_barcode',null,['placeholder' => 'Código do produto...', 'class' => 'btn', 'style' => 'text-align:left; width:300px; color: #ffffff; background-color:#000000; border:thik; border-color:#10c413', 'id' => 'codBar']) !!}
+            {!! Form::search('product_barcode',null,['placeholder' => 'Código do produto...', 'class' => 'btn', 'style' => 'text-align:left; width:300px; color: #ffffff; background-color:#000000; border-color:#edb820', 'id' => 'codBar']) !!}
             @if(isset($order))
                 {!! Form::button(Icon::barcode(), ['type'=>'submit', 'class' => 'btn btn-primary']) !!}
             @else
@@ -51,9 +51,16 @@
             @else
                 {!! Button::primary(Icon::create('link'))->addAttributes(['style' => 'display: inline;margin-left:30px; margin-right:-35px; height:40px;', 'disabled' => 'true'])  !!}
             @endif
+            @if(isset($order) && $order->pay_method != '3')
+                {!! Button::success(Icon::create('credit-card'))->addAttributes(['style' => 'display: inline;margin-left:30px; margin-right:-35px; height:40px;', 'data-toggle' => 'modal', 'data-target' => '#confirmarCartaoModal'])  !!}
+            @elseif(isset($order) && $order->pay_method == '3')
+                {!! Button::danger(Icon::create('credit-card'))->addAttributes(['style' => 'display: inline;margin-left:30px; margin-right:-35px; height:40px;', 'data-toggle' => 'modal', 'data-target' => '#removerCartaoModal'])  !!}
+            @else
+                {!! Button::primary(Icon::create('credit-card'))->addAttributes(['style' => 'display: inline;margin-left:30px; margin-right:-35px; height:40px;', 'disabled' => 'true'])  !!}
+            @endif
         </div>
         <div class="row">
-            <div class="col-xs-7 col-sm-6 col-lg-8" style="background-image: url({{asset('storage/images/brands/listaEsquerda.jpg')}}); overflow: auto; margin-left:-61px; border: solid; border-width: 1px; height: 450px;" id="tabsCategorias" data-url="<?= route('admin.categories.create') ?>">
+            <div class="col-xs-7 col-sm-6 col-lg-8" style="background-color:#7a0f14; background-image:url({{asset('storage/images/brands/logo3.jpg')}}); overflow: auto; margin-left:-61px; border: solid; border-width: 1px; height: 450px;" id="tabsCategorias" data-url="<?= route('admin.categories.create') ?>">
                 @php
                     foreach($categories as $category){
                         $brands = App\Models\Brand::all()->where('category_id', '=', $category->id);
@@ -83,7 +90,7 @@
                     <h4>Para iniciar uma venda clique em "Nova Mesa"!</h4>
                 @endif
             </div>
-            <div class="col-xs-5 col-sm-6 col-lg-5" style="background-image: url({{asset('storage/images/brands/listaDireita.jpg')}}); margin-right:-40px; border: solid; border-width: 1px; height: 450px; overflow: auto">
+            <div class="col-xs-5 col-sm-6 col-lg-5" style="background-color:#7a0f14; background-image:url({{asset('storage/images/brands/logo3.jpg')}}); margin-right:-40px; border: solid; border-width: 1px; height: 450px; overflow: auto">
                 @if(isset($order))
                         <div align="center" style="border-bottom: solid; border-width: 1px; border-color: #2F3133"> Produtos de {{$order->client->name}}</div>
                         {!! $tabela = App\Models\Sell::atualizaTabelaDeItens($order->id)!!}
@@ -101,7 +108,7 @@
             @endphp
         </div>
         <div class="col-xs-5 col-sm-6 col-lg-5" style="margin-top:-20px; margin-right: -60px; text-align:left;  display: inline;">
-            <p style="margin-left: 10px; margin-top: -5px">Valor total da compra: <span style="font-size: 22px;  display: inline;">R$@if(isset($order)){{number_format((float)$order->total, 2, ',', '')}} @else 0,00 @endif </span>
+            <p style="margin-left: 10px; margin-top: -5px">Valor total da compra: <span style="font-size: 22px;  display: inline;">R$@if(isset($order)){{number_format($order->total, 2, ',', '.')}} @else 0,00 @endif </span>
                 @php
                     if(isset($order))
                         if(\App\Http\Controllers\OrderController::possuiPagamento($order))
@@ -134,8 +141,8 @@
             @endphp
         </div>
     </div>
-    <div data-keyboard="false" data-backdrop="static" class="modal fade" id="productModal" tabindex="-1">
-        <div class="modal-dialog">
+    <div data-keyboard="false" data-backdrop="static" class="modal fade" id="productModal" tabindex="-1" >
+        <div class="modal-dialog" style="width: 800px">
             <div class="modal-content">
                 <div class="modal-header">
                     <button class="close" data-dismiss="modal">&times;</button>
@@ -193,7 +200,7 @@
         </div>
     </div>
     <div data-keyboard="false" data-backdrop="static" class="modal fade" id="vendaParcial" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" style="width: 800px" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -204,7 +211,13 @@
                     @php
                     if(isset($order))
                         if(\App\Http\Controllers\OrderController::possuiPagamento($order)){
-                        echo '<br><p style="display:inline; vertical-align: middle;font-weight: bold">Informe o valor a ser pago: </p>
+                        echo '<br><p style="display:inline; vertical-align: middle;font-weight: bold">Informe o vendedor: </p>
+                    <select style="max-height: 50px; overflow: auto" class="selectpicker" data-live-search="true" name="user_id">';
+                        $users = App\User::all();
+                        foreach($users as $user)
+                            echo '<option value="'.$user->id.'">'.$user->name.'</option>';
+
+                    echo '</select><br><p style="display:inline; vertical-align: middle;font-weight: bold">Informe o valor a ser pago: </p>
                     <select class="" id="formaPagamentoParcial" name="formaPagamento" style="width: 212px;" disabled="true">
                         <option value="4">Múltiplo</option>
                     </select>
@@ -220,9 +233,15 @@
                             echo Form::hidden('order_id', $order->id);
                             echo Form::hidden('formaPagamento', 4);
                         }else
-                        echo 'Não existe pedido em aberto!';
-                        }
+                            echo 'Não existe pedido em aberto!';
+                       }
                         else{
+                        echo '<br><p style="display:inline; vertical-align: middle;font-weight: bold">Informe o vendedor: </p>
+                    <select style="max-height: 50px; overflow: auto" class="selectpicker" data-live-search="true" name="user_id">';
+                        $users = App\User::all();
+                        foreach($users as $user)
+                            echo '<option value="'.$user->id.'">'.$user->name.'</option>';
+                        echo '</select>';
                         echo '<br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione a forma de pagamento: </p>
                     <select class="" id="formaPagamentoParcial" required name="formaPagamento" style="width: 212px;" onclick="parcial()">
                         <option value="">Selecione...</option>
@@ -266,7 +285,13 @@
                 </div>
                 {!! Form::open(array('action' => 'SellController@concluirVenda', 'method' => 'post')) !!}
                 <div class="modal-body">
-
+                    <br><p style="display:inline; vertical-align: middle;font-weight: bold">Informe o vendedor: </p>
+                    <select style="max-height: 50px; overflow: auto" class="selectpicker" data-live-search="true" name="user_id">
+                        {!! $users = App\User::all() !!}
+                        @foreach($users as $user)
+                            <option value="{{$user->id}}">{{$user->name}}</option>
+                        @endforeach
+                    </select>
                     <br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione a forma de pagamento: </p>
                     <select class="" id="formaPagamentoTotal" required name="formaPagamento" style="width: 212px;" onclick='troco();total();'>
                         <option value="">Selecione...</option>
@@ -277,12 +302,11 @@
                     </select>
                     <div id="troco" style="display: none;">
                         @if(isset($order))
-                        Valor da venda (R$): <input style="width: 90px" type="text" id="num1" value="{{$order->total}}" disabled="true" />
-                        <br>
+                            Valor da venda (R$): <input style="margin-left: 5px; width: 90px" type="text" id="num1" value="{{$order->total}}" disabled="true" />
+                             |
                         @endif
-                        Valor entregue: <input style="margin-left: 41px; width: 90px" type="text" id="num2" onblur="calcular();" />
+                        Valor entregue: <input style="margin-left: 5px; width: 90px" type="text" id="num2" onblur="calcular();" />
                         <br>
-                        <span id="resultado"></span>
                     </div>
                     <div id="obsTotal" style="display: none; width:500px">
                         @if(isset($order))
@@ -292,6 +316,10 @@
                         Informe uma observação:
                         <textarea name="obs" style="width:500px"></textarea>
                     </div>
+                    <div id="valorDesconto" style="display: none;">
+                        Desconto(R$) <input style="width: 90px"; id="num3" name="valorDesconto" type="text" step="0.01" onblur="calcular();">
+                    </div>
+                    <span id="resultado" style="font-size: 22px; font-weight: bold"></span>
                     @php
                         if(isset($order)){
                             echo Form::hidden('order_id', $order->id);
@@ -299,6 +327,7 @@
                     @endphp
                 </div>
                 <div class="modal-footer">
+                    <p style="display: inline; margin-right: 70px">Clique <a onclick='mostraDesconto()'>clique aqui </a> para aplicar desconto!</p>
                     {!! Form::submit('Concluir!', array('class' => 'btn btn-success')) !!}
                     {!! Form::close() !!}
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -341,7 +370,7 @@
                 </div>
                 {!! Form::open(array('action' => 'SellController@aplicarRemoverDesconto', 'method' => 'post')) !!}
                 <div class="modal-body">
-                    <br><p style="display:inline; vertical-align: middle;font-weight: bold; color: #2F3133">  Deseja aplicar desconto de associado para esta venda? </p>
+                    <br><p style="display:inline; vertical-align: middle;font-weight: bold; color: #2F3133">  Deseja aplicar desconto de atacado para esta venda? </p>
 
                     @php
                         if(isset($order)){
@@ -367,11 +396,65 @@
                 </div>
                 {!! Form::open(array('action' => 'SellController@aplicarRemoverDesconto', 'method' => 'post')) !!}
                 <div class="modal-body">
-                    <br><p style="display:inline; vertical-align: middle;font-weight: bold; color: #2F3133">  Deseja remover o desconto de associado para esta venda? </p>
+                    <br><p style="display:inline; vertical-align: middle;font-weight: bold; color: #2F3133">  Deseja remover o desconto de atacado para esta venda? </p>
 
                     @php
                         if(isset($order)){
                             echo Form::hidden('order_id', $order->id);
+                        }
+                    @endphp
+                    {!! Form::token() !!}
+                </div>
+                <div class="modal-footer">
+                    {!! Form::submit('Sim!', array('class' => 'btn btn-danger')) !!}
+                    {!! Form::close() !!}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div data-keyboard="false" data-backdrop="static" class="modal fade" id="confirmarCartaoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel" style="color: #2F3133">{!!\Bootstrapper\Facades\Icon::create('warning-sign')->withAttributes(['class' => 'btn-lg'])!!}&ensp;&ensp;  Aplicar Taxa</h4>
+                </div>
+                {!! Form::open(array('action' => 'SellController@aplicarRemoverCartao', 'method' => 'post')) !!}
+                <div class="modal-body">
+                    <br><p style="display:inline; vertical-align: middle;font-weight: bold; color: #2F3133">  Deseja aplicar taxa de cartão de crédito para esta venda? </p>
+
+                    @php
+                        if(isset($order)){
+                            echo Form::hidden('order_id', $order->id);
+                            echo Form::hidden('aplica', 1);
+                        }
+                    @endphp
+                    {!! Form::token() !!}
+                </div>
+                <div class="modal-footer">
+                    {!! Form::submit('Sim!', array('class' => 'btn btn-success')) !!}
+                    {!! Form::close() !!}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div data-keyboard="false" data-backdrop="static" class="modal fade" id="removerCartaoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel" style="color: #2F3133">{!!\Bootstrapper\Facades\Icon::create('warning-sign')->withAttributes(['class' => 'btn-lg'])!!}&ensp;&ensp;  Remover Taxa</h4>
+                </div>
+                {!! Form::open(array('action' => 'SellController@aplicarRemoverCartao', 'method' => 'post')) !!}
+                <div class="modal-body">
+                    <br><p style="display:inline; vertical-align: middle;font-weight: bold; color: #2F3133">  Deseja remover a taxa de cartão de crédito para esta venda? </p>
+
+                    @php
+                        if(isset($order)){
+                            echo Form::hidden('order_id', $order->id);
+                            echo Form::hidden('aplica', 0);
                         }
                     @endphp
                     {!! Form::token() !!}
@@ -432,8 +515,9 @@
         function calcular() {
             var num1 = Number(document.getElementById("num1").value);
             var num2 = Number(document.getElementById("num2").value);
+            var num3 = Number(document.getElementById("num3").value);
             var elemResult = document.getElementById("resultado");
-            var sub = num2 - num1;
+            var sub = num2 - num1 + num3;
 
             if (elemResult.textContent === undefined) {
                 elemResult.textContent = "Troco (R$): " + sub.toFixed(2) + "";
@@ -441,6 +525,9 @@
             else { // IE
                 elemResult.innerText = "Troco (R$): " + sub.toFixed(2) + "";
             }
+        }
+        function mostraDesconto(){
+            document.getElementById('valorDesconto').style.display = 'block';
         }
 
     </script>
