@@ -211,13 +211,13 @@
                     @php
                     if(isset($order))
                         if(\App\Http\Controllers\OrderController::possuiPagamento($order)){
-                        echo '<br><p style="display:inline; vertical-align: middle;font-weight: bold">Informe o vendedor: </p>
+                        /*echo '<br><p style="display:inline; vertical-align: middle;font-weight: bold">Informe o vendedor: </p>
                     <select style="max-height: 50px; overflow: auto" class="selectpicker" data-live-search="true" name="user_id">';
                         $users = App\User::all();
                         foreach($users as $user)
                             echo '<option value="'.$user->id.'">'.$user->name.'</option>';
-
-                    echo '</select><br><p style="display:inline; vertical-align: middle;font-weight: bold">Informe o valor a ser pago: </p>
+                    echo '</select>';*/
+                    echo '<br><p style="display:inline; vertical-align: middle;font-weight: bold">Informe o valor a ser pago: </p>
                     <select class="" id="formaPagamentoParcial" name="formaPagamento" style="width: 212px;" disabled="true">
                         <option value="4">Múltiplo</option>
                     </select>
@@ -236,12 +236,12 @@
                             echo 'Não existe pedido em aberto!';
                        }
                         else{
-                        echo '<br><p style="display:inline; vertical-align: middle;font-weight: bold">Informe o vendedor: </p>
+                        /*echo '<br><p style="display:inline; vertical-align: middle;font-weight: bold">Informe o vendedor: </p>
                     <select style="max-height: 50px; overflow: auto" class="selectpicker" data-live-search="true" name="user_id">';
                         $users = App\User::all();
                         foreach($users as $user)
                             echo '<option value="'.$user->id.'">'.$user->name.'</option>';
-                        echo '</select>';
+                        echo '</select>';*/
                         echo '<br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione a forma de pagamento: </p>
                     <select class="" id="formaPagamentoParcial" required name="formaPagamento" style="width: 212px;" onclick="parcial()">
                         <option value="">Selecione...</option>
@@ -285,13 +285,13 @@
                 </div>
                 {!! Form::open(array('action' => 'SellController@concluirVenda', 'method' => 'post')) !!}
                 <div class="modal-body">
-                    <br><p style="display:inline; vertical-align: middle;font-weight: bold">Informe o vendedor: </p>
+                    {{--<br><p style="display:inline; vertical-align: middle;font-weight: bold">Informe o vendedor: </p>
                     <select style="max-height: 50px; overflow: auto" class="selectpicker" data-live-search="true" name="user_id">
                         {!! $users = App\User::all() !!}
                         @foreach($users as $user)
                             <option value="{{$user->id}}">{{$user->name}}</option>
                         @endforeach
-                    </select>
+                    </select>--}}
                     <br><p style="display:inline; vertical-align: middle;font-weight: bold">Selecione a forma de pagamento: </p>
                     <select class="" id="formaPagamentoTotal" required name="formaPagamento" style="width: 212px;" onclick='troco();total();'>
                         <option value="">Selecione...</option>
@@ -327,7 +327,7 @@
                     @endphp
                 </div>
                 <div class="modal-footer">
-                    <p style="display: inline; margin-right: 70px">Clique <a onclick='mostraDesconto()'>clique aqui </a> para aplicar desconto!</p>
+                    <p style="display: inline; margin-right: 70px">Clique <a onclick='mostraDesconto()'>AQUI </a> para aplicar desconto!</p>
                     {!! Form::submit('Concluir!', array('class' => 'btn btn-success')) !!}
                     {!! Form::close() !!}
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
