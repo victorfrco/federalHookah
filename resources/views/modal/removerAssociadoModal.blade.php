@@ -7,7 +7,7 @@
             </div>
             {!! Form::open(array('action' => 'SellController@aplicarRemoverDesconto', 'method' => 'post')) !!}
             <div class="modal-body">
-                <br><p style="display:inline; vertical-align: middle;font-weight: bold; color: #2F3133">  Deseja remover o desconto de atacado para esta venda? </p>
+                <br><p style="display:inline; vertical-align: middle;font-weight: bold; color: #2F3133">  Deseja remover o desconto de associado para esta venda? </p>
 
                 @php
                     if(isset($order)){

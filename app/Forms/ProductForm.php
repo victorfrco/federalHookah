@@ -15,7 +15,7 @@ class ProductForm extends Form
             ->add('description', 'text', ['label' => 'Descrição'])
             ->add('price_cost', 'text', ['label' => 'Preço de Compra', 'rules' => 'required'])
             ->add('price_resale', 'text', ['label' => 'Preço de Venda', 'rules' => 'required'])
-            ->add('price_discount', 'text', ['label' => 'Preço Atacado', 'rules' => 'required'])
+            ->add('price_discount', 'text', ['label' => 'Preço Associado', 'rules' => 'required'])
             ->add('price_card', 'text', ['label' => 'Preço Cartão', 'rules' => 'required'])
 	        ->add('barcode','text', ['label' => 'Código de Barras'])
             ->add('brand_id','entity', [
