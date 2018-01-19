@@ -47,12 +47,12 @@
                     <td>{{$product->description}}</td>
                 </tr>
                 <tr>
-                    <th scope="row">Preço / Associado</th>
-                    <td>R${{number_format((float)$product->price_resale, 2, '.', '')}} / R${{number_format((float)$product->price_discount, 2, '.', '')}} </td>
+                    <th scope="row">Preço / Atacado / Cartão de Crédito</th>
+                    <td>R${{number_format($product->price_resale, 2, ',', '.')}} / R${{number_format($product->price_discount, 2, ',', '.')}} / R${{number_format($product->price_card, 2, ',', '.')}} </td>
                 </tr>
                 <tr>
                     <th scope="row">Preço de Custo</th>
-                    <td>R${{number_format((float)$product->price_cost, 2, '.', '')}}</td>
+                    <td>R${{number_format($product->price_cost, 2, ',', '.')}}</td>
                 </tr>
                 <tr>
                     <th scope="row">Quantidade em Estoque</th>

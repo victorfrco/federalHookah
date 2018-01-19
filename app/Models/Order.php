@@ -53,7 +53,7 @@ class Order extends Model implements TableInterface
 				return Client::find($this->client_id)->name;
 				break;
 			case 'Valor Total':
-				return 'R$ '.number_format((float)$this->getValorTotal(), 2, '.', '');
+				return 'R$ '.number_format($this->getValorTotal(), 2, ',', '.');
 				break;
 			case 'Quantidade de Produtos':
 				return $this->getQtdProdutosTotal();

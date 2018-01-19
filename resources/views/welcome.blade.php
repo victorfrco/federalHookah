@@ -79,7 +79,7 @@
 
     <div class="content">
         <div class="title m-b-md" style="font-size: 110px;">
-            Federal Hookah Pub
+            <img width="700px" src="{{asset('storage/images/brands/logo.png')}}">
 
         </div>
     </div>
