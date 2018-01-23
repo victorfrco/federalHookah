@@ -21,13 +21,12 @@ class ReportController extends Controller
 	public function generateAnaliticReport(Request $request){
 		$date  = $request->toArray()['date'];
 		$dados = $this->buscaEntradasESaidas( $date );
-		if ( !$dados['entradas']->count() < 1 && !$dados['saidas']->count() < 1) {
-			$pdf = PDF::loadView( 'admin.reports.analitic', compact( 'dados' ) );
-
-			return $pdf->download( 'Entradas e Saidas_' . $dados['data'] . '.pdf' );
-		} else {
+		if ($dados['entradas']->count() == 0 && $dados['saidas']->count() == 0) {
 			$request->session()->flash('message', 'Não existe nenhuma entrada ou saída na data informada!');
 			return redirect()->route('report');
+		} else {
+			$pdf = PDF::loadView( 'admin.reports.analitic', compact( 'dados' ) );
+			return $pdf->download( 'Entradas e Saidas_' . $dados['data'] . '.pdf' );
 		}
 	}
 
