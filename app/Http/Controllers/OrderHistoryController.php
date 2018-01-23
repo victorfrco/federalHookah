@@ -45,7 +45,8 @@ class OrderHistoryController extends Controller
 		$dados['ultimaAtualizacao'] = $order->getUltimaAtualizacao();
 		$dados['possuiSubOrder'] = $order->verificaSubOrder($order);
 		$dados['usuarioResponsavel'] = $order->getNomeUsuario();
-		$dados['vlrTotal'] = $order->getValorTotal();
+		$dados['vlrTotal'] = $order->absolut_total;
+		$dados['vlrDesconto'] = $order->discount;
 		$dados['formaDePagamento'] = $order->getFormaDePagamento();
 		$dados['subOrders'] = $order->getSubOrders();
 		$dados['nomeCliente'] = $order->getNomeCliente();

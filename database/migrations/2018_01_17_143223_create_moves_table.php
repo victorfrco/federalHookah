@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateItensTable extends Migration
+class CreateMovesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,16 @@ class CreateItensTable extends Migration
      */
     public function up()
     {
-        Schema::create('itens', function (Blueprint $table) {
+        Schema::create('moves', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('qtd');
-	        $table->decimal('total', 8,2)->nullable();
-            $table->timestamps();
-
-            $table->unsignedInteger('order_id')->nullable();
+            $table->unsignedInteger('status');
+            $table->unsignedInteger('client_id')->nullable();
+            $table->unsignedInteger('user_id');
             $table->unsignedInteger('product_id');
+            $table->unsignedInteger('qtd');
+            $table->decimal('vlrUnit', 8,2);
+
+	        $table->timestamps();
         });
     }
 
@@ -31,6 +33,6 @@ class CreateItensTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('itens');
+        Schema::dropIfExists('moves');
     }
 }
