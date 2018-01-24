@@ -31,7 +31,12 @@
 
     <div class="container">
         <div class="col-xs-7 col-sm-6 col-lg-7"  style="margin-left:-90px; margin-right: 130px; margin-bottom: 10px;">
-            {!! \Bootstrapper\Facades\Button::primary('Nova Venda')->withAttributes(['class'=>'botao', 'data-toggle' => 'modal', 'data-target' => '#novaMesaModal']) !!}
+            @if(App\Http\Controllers\CashController::buscaCaixaPorUsuario(\Illuminate\Support\Facades\Auth::id()) != null)
+                {!! \Bootstrapper\Facades\Button::primary('Nova Venda')->withAttributes(['class'=>'botao', 'data-toggle' => 'modal', 'data-target' => '#novaMesaModal']) !!}
+            @else
+                {!! \Bootstrapper\Facades\Button::primary('Nova Venda')->withAttributes(['class'=>'botao', 'data-toggle' => 'modal', 'data-target' => '#novaMesaModal', 'disabled' => 'true']) !!}
+                {!! \Bootstrapper\Facades\Button::primary('Abrir Caixa!')->asLinkTo(route('admin.cashes.index')) !!}
+            @endif
         </div>
         <div class="row" style="text-align: right">
             {!! Form::open(array('action' => 'SellController@codBarra', 'method' => 'post', 'style' => 'display:inline')) !!}
@@ -108,8 +113,10 @@
         <div style="margin-left:-70px">Mesas:</div>
         <div class="col-xs-7 col-sm-6 col-lg-7" style="max-height: 70px; min-width:770px; margin-left:-80px; overflow-x: auto;white-space: nowrap;">
             @php
-                $orderController = new App\Http\Controllers\OrderController();
-                echo $orderController->carregaPedidosAbertos();
+                if(App\Http\Controllers\CashController::buscaCaixaPorUsuario(\Illuminate\Support\Facades\Auth::id()) != null){
+                    $orderController = new App\Http\Controllers\OrderController();
+                    echo $orderController->carregaPedidosAbertos();
+                }
             @endphp
         </div>
         <div class="col-xs-5 col-sm-6 col-lg-5" style="margin-top:-20px; margin-right: -60px; text-align:left;  display: inline;">

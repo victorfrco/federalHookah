@@ -146,6 +146,14 @@ class ProductController extends Controller
 
 
         $data = $form->getFieldValues();
+
+	    $source = array('.', ',');
+	    $replace = array('', '.');
+	    $data['price_cost'] = str_replace($source, $replace, $data['price_cost']);
+	    $data['price_resale'] = str_replace($source, $replace, $data['price_resale']);
+	    $data['price_discount'] = str_replace($source, $replace, $data['price_discount']);
+	    $data['price_card'] = str_replace($source, $replace, $data['price_card']);
+
         $product->update($data);
 
         session()->flash('message', 'Produto alterado com sucesso!');

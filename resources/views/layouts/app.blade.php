@@ -48,12 +48,14 @@
                     ['link' => route('admin.clients.index'), 'title' => 'Clientes'],
                     ['link' => route('estoque'), 'title' => 'Estoque'],
                     ['link' => route('admin.bonifications.index'), 'title' => 'Bonificação'],
-                    ['link' => route('history'), 'title' => 'Histórico']
+                    ['link' => route('history'), 'title' => 'Histórico'],
+                    ['link' => route('admin.cashes.index'), 'title' => 'Meu Caixa']
                 ];
             }
             else{
                 $arrayLinks = [
-                        ['link' => route('admin.clients.index'), 'title' => 'Clientes']
+                        ['link' => route('admin.clients.index'), 'title' => 'Clientes'],
+                        ['link' => route('admin.cashes.index'), 'title' => 'Meu Caixa']
                     ];
             }
              $arrayLinksRight = [
