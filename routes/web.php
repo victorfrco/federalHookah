@@ -20,6 +20,8 @@ Route::post('/associado','SellController@aplicarRemoverDesconto');
 Route::post('/cartao','SellController@aplicarRemoverCartao');
 Route::post('/admin/generateReport', 'ReportController@generateReport');
 Route::post('/admin/analiticReport', 'ReportController@generateAnaliticReport');
+Route::post('/admin/sellReport', 'ReportController@generateSellReport');
+Route::post('/admin/userReport', 'ReportController@generateUserReport');
 Route::get('/admin/report', 'ReportController@index')->name('report');
 Route::post('/admin/addStock', 'ProductController@addStock');
 Route::post('/admin/decreaseStock', 'ProductController@decreaseStock');
