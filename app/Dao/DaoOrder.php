@@ -28,18 +28,31 @@ class DaoOrder
 	}
 
 
-	/**
-	 * @param $dataInicial
-	 * @param $formaDePagamento
-	 * @param null $dataFinal
-	 *
-	 * @return \Illuminate\Support\Collection
-	 */
-	public function buscaVendasPorFormaDePagamento($dataInicial, $formaDePagamento, $dataFinal = null){
-		if(isset($dataFinal)){
-			return DB::table('orders')->whereNull('original_order')->whereBetween('created_at', [$dataInicial, $dataFinal])->where('pay_method', '=', $formaDePagamento)->get();
-		}
-	}
+    /**
+     * @param $dataInicial
+     * @param $formaDePagamento
+     * @param null $dataFinal
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function buscaVendasPorFormaDePagamento($dataInicial, $formaDePagamento, $dataFinal = null){
+        if(isset($dataFinal)){
+            return DB::table('orders')->whereNull('original_order')->whereBetween('created_at', [$dataInicial, $dataFinal])->where('pay_method', '=', $formaDePagamento)->get();
+        }
+    }
+
+    /**
+     * @param $dataInicial
+     * @param $formaDePagamento
+     * @param null $dataFinal
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function buscaVendasPorFormaDePagamentoCaixa($dataInicial, $formaDePagamento, $dataFinal = null){
+        if(isset($dataFinal)){
+            return DB::table('orders')->whereBetween('created_at', [$dataInicial, $dataFinal])->where('pay_method', '=', $formaDePagamento)->get();
+        }
+    }
 
 
 	/**

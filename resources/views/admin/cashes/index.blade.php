@@ -7,16 +7,19 @@
         </div>
         <div class="row">
             @php
-                if($caixa == null){
-                    echo 'Não existe caixa em aberto. Por favor realize a abertura de caixa!<br><br>';
-                    echo \Bootstrapper\Facades\Button::success('Abrir Caixa')->withAttributes(['data-toggle' => 'modal', 'data-target' => '#abrirCaixaModal']);
-                }else{
-                    echo 'Hora de abertura do caixa: '.$caixa->getDataAberturaFormatada().'<br>';
-                    echo 'Valor de abertura: '.$caixa->getValorAberturaFormatado().'<br>';
-                    echo 'Valor de vendas *: '.$caixa->getValorAtualFormatado().'<br>';
-                    echo 'Valor atual (caixa + troco): '.$caixa->getValorTotalFormatado().'<br><br>';
-                    echo \Bootstrapper\Facades\Button::danger('Fechar Caixa')->withAttributes(['data-toggle' => 'modal', 'data-target' => '#fecharCaixaModal']);
-                }
+                $orderDao = new App\Dao\DaoOrder();
+                    if($caixa == null){
+                        echo 'Não existe caixa em aberto. Por favor realize a abertura de caixa!<br><br>';
+                        echo \Bootstrapper\Facades\Button::success('Abrir Caixa')->withAttributes(['data-toggle' => 'modal', 'data-target' => '#abrirCaixaModal']);
+                    }else{
+                        echo 'Hora de abertura do caixa: '.$caixa->getDataAberturaFormatada().'<br>';
+                        echo 'Valor de abertura: '.$caixa->getValorAberturaFormatado().'<br>';
+                        echo 'Valor de vendas (dinheiro): '.$caixa->getValorAtualFormatado().'<br>';
+                        echo 'Valor de vendas (débito): R$'.number_format($orderDao->buscaVendasPorFormaDePagamentoCaixa($caixa->opened_at, 2, new DateTime())->sum('total'), 2, ',', '.').'<br>';
+                        echo 'Valor de vendas (crédito): R$'.number_format($orderDao->buscaVendasPorFormaDePagamentoCaixa($caixa->opened_at, 3, new DateTime())->sum('total'), 2, ',', '.').'<br>';
+                        echo 'Valor atual (caixa + troco): '.$caixa->getValorTotalFormatado().'<br><br>';
+                        echo \Bootstrapper\Facades\Button::danger('Fechar Caixa')->withAttributes(['data-toggle' => 'modal', 'data-target' => '#fecharCaixaModal']);
+                    }
             @endphp
         </div>
     </div>
