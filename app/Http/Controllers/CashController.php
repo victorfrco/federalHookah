@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Cash;
 use App\Models\Category;
+use App\User;
 use function array_key_exists;
 use DateTime;
+use Illuminate\Auth\DatabaseUserProvider;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Redirect;
 
 class CashController extends Controller
@@ -20,8 +21,9 @@ class CashController extends Controller
     public function index()
     {
     	//status 1 = EM_ABERTO
-	    $caixa = $this->buscaCaixaPorUsuario(Auth::id());
-	    return view('admin.cashes.index', compact('caixa'));
+	    $caixa = $this->buscaCaixaPorUsuario(\Auth::id());
+	    $autenticado = 0;
+	    return view('admin.cashes.index', compact('caixa', 'autenticado'));
     }
 
     /**
@@ -42,7 +44,7 @@ class CashController extends Controller
     public function store(Request $request)
     {
 	    $cash = new Cash();
-	    $cash->user_id = Auth::id();
+	    $cash->user_id = \Auth::id();
 
 	    $valor = $request->get('inicial_value');
 
@@ -55,7 +57,8 @@ class CashController extends Controller
 	    $cash->save();
 
 	    $caixa = Cash::find($cash->id);
-	    return view('admin.cashes.index', compact('caixa'));
+        $autenticado = 0;
+        return view('admin.cashes.index', compact('caixa', 'autenticado'));
     }
 
     /**
@@ -121,4 +124,14 @@ class CashController extends Controller
 	public static function buscaCaixaPorUsuario( $user_id ) {
 		return Cash::all()->where('user_id', '=', $user_id)->where('status', '=', 1)->first();
 	}
+
+	public function autenticar(Request $request){
+        $admin = User::find(2);
+        $caixa = $this->buscaCaixaPorUsuario(\Auth::id());
+        $autenticado = 0;
+        $valido = \Auth::getProvider()->validateCredentials($admin, array('name' => 'ADMIN' , 'password' => $request->senha));
+        if($valido)
+            $autenticado = 1;
+        return view('admin.cashes.index', compact('caixa', 'autenticado'));
+    }
 }

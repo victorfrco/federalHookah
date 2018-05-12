@@ -83,3 +83,4 @@ Route::get('/upload', 'BrandController@upload');
 Route::post('/move', 'BrandController@move')->name('move');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/cashes', 'CashController@fecharCaixa')->name('fecharCaixa');
+Route::post('/auth', 'CashController@autenticar')->name('autenticar');
