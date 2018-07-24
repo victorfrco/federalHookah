@@ -35,7 +35,7 @@ class OrderController extends Controller
             $div = Button::primary($order->client->nickname)->withAttributes([
                         'id' => $order->id,
                         'style' =>
-                                   'min-width: 100px;
+                                   'width: auto;
                                    height: 40px;
                                    font-size: 12px;
                                    font-weight:bold;
