@@ -84,7 +84,7 @@
                         $string = implode($listadivs);
 
                        $names[] = [
-                                'title' => '<p style="text-align:center; font-size:12px" rel="tooltip" title="'.$category->name.'">'.substr($category->name,0,9).'</p>',
+                                'title' => '<p style="text-align:center; font-size:12px" rel="tooltip" title="'.$category->name.' : '.$category->description.'">'.substr($category->name,0,9).'</p>',
                                 'content' => "<div>$string</div>"
                             ];
                             unset($listadivs);
