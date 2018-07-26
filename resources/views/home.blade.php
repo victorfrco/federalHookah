@@ -84,13 +84,13 @@
                         $string = implode($listadivs);
 
                        $names[] = [
-                                'title' => $category->name,
+                                'title' => '<p style="text-align:center; font-size:12px" rel="tooltip" title="'.$category->name.'">'.substr($category->name,0,9).'</p>',
                                 'content' => "<div>$string</div>"
                             ];
                             unset($listadivs);
                      }
                       $names[] = [
-                         'title' => Icon::create('plus'),
+                         'title' => '<p style="text-align:center; vertical-align: top; font-size:20px" rel="tooltip" title="Nova Categoria">'.Icon::create('plus').'</p>',
                          'content' => ''
                      ];
                 @endphp
@@ -227,6 +227,10 @@
         function mostraDesconto(){
             document.getElementById('valorDesconto').style.display = 'block';
         }
+
+        $(document).ready(function(){
+            $("[rel=tooltip]").tooltip({ placement: 'bottom'});
+        });
 
     </script>
     <!-- Latest compiled and minified CSS -->

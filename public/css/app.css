@@ -5134,6 +5134,8 @@ tbody.collapse.in {
 
 .nav-tabs > li > a {
   margin-right: 2px;
+  width: 103px;
+  height: 45px;
   line-height: 1.6;
   background-color: #202020;
   border: 1px solid transparent;
