@@ -140,6 +140,7 @@ class BrandController extends Controller
 	    if($data['logo'] != null) {
 			    $data['logo']->move( storage_path( 'app' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'brands' ), $brand->logo_path );
 	    }
+        $data['status'] = $data['status'] == null ? 0 : 1;
         $brand->update($data);
 
         session()->flash('message', 'Marca alterada com sucesso!');
