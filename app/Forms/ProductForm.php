@@ -27,6 +27,8 @@ class ProductForm extends Form
                     // If query builder option is not provided, all data is fetched
                     return $brand;
                 }
-            ]);
+
+            ])
+            ->add('status', 'checkbox', ['label' => 'Ativo']);
     }
 }

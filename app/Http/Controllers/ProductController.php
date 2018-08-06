@@ -160,13 +160,13 @@ class ProductController extends Controller
 
 
         $data = $form->getFieldValues();
-
 	    $source = array('.', ',');
-	    $replace = array('', '.');
+	    $replace = array('.', '.');
 	    $data['price_cost'] = str_replace($source, $replace, $data['price_cost']);
 	    $data['price_resale'] = str_replace($source, $replace, $data['price_resale']);
 	    $data['price_discount'] = str_replace($source, $replace, $data['price_discount']);
 	    $data['price_card'] = str_replace($source, $replace, $data['price_card']);
+        $data['status'] = $data['status'] == null ? 0 : 1;
 
         $product->update($data);
 
