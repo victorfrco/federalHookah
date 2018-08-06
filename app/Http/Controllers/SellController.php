@@ -37,7 +37,7 @@ class SellController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = category::all()->where('status', '=', 1);
         return view('admin.sells.index', compact('categories'));
     }
 	//aplica ou remove preço de associado a uma venda
@@ -51,7 +51,7 @@ class SellController extends Controller
 		}
 
 		$order->update();
-		$categories = Category::all();
+		$categories = category::all()->where('status', '=', 1);
 
 		return view('home', compact('order', 'categories'));
 	}
@@ -68,7 +68,7 @@ class SellController extends Controller
 		}
 
 		$order->update();
-		$categories = Category::all();
+		$categories = category::all()->where('status', '=', 1);
 
 		return view('home', compact('order', 'categories'));
 	}
@@ -77,7 +77,7 @@ class SellController extends Controller
     public function removeItem(Request $request){
 		$item = Item::find($request->toArray()['item']);
 	    $product = Product::find($item->product_id);
-	    $categories = Category::all();
+	    $categories = category::all()->where('status', '=', 1);
 
 	    $product->qtd += $item->qtd;
 	    $product->update();
@@ -98,7 +98,7 @@ class SellController extends Controller
         $order->user_id = Auth::user()->id;
         $order->save();
 
-        $categories = Category::all();
+        $categories = category::all()->where('status', '=', 1);
         return redirect('home')->with(compact('order', 'categories'));
     }
 
@@ -152,7 +152,7 @@ class SellController extends Controller
 			    return redirect()->back()->with( 'inexistente', '' );
 		    }
 	    }
-	    $categories = Category::all();
+	    $categories = category::all()->where('status', '=', 1);
 	    return view('home', compact('order', 'categories'));
     }
 
@@ -208,7 +208,7 @@ class SellController extends Controller
             }
         }
 	    $order->update();
-        $categories = Category::all();
+        $categories = category::all()->where('status', '=', 1);
 	    return view('home', compact('order', 'categories'));
     }
 
@@ -398,7 +398,7 @@ class SellController extends Controller
                 $orderOriginal->status = $this->STATUS_PAGA;
                 $orderOriginal->update();
                 $parcial->save();
-                $categories = Category::all();
+                $categories = category::all()->where('status', '=', 1);
                 return view('home', compact('order', 'categories'));
             }else
 	            $orderOriginal->status = $this->STATUS_PAGA_PARCIALMENTE;
@@ -407,7 +407,7 @@ class SellController extends Controller
             $parcial->save();
 
             $order = $orderOriginal;
-            $categories = Category::all();
+            $categories = category::all()->where('status', '=', 1);
             return view('home', compact('order', 'categories'));
 
         }
@@ -475,7 +475,7 @@ class SellController extends Controller
 		}
 
         $order = $orderOriginal;
-		$categories = Category::all();
+		$categories = category::all()->where('status', '=', 1);
 		return view('home', compact('order', 'categories'));
 	}
 

@@ -34,7 +34,7 @@ Route::post('/cancelarVenda', 'SellController@cancelarVenda');
 
 Route::get('/home/{id}', function($id){
     $order = Order::find($id);
-    $categories = Category::all();
+    $categories = category::all()->where('status', '=', 1);
     return view('/home', compact('order', 'categories'));
 });
 
