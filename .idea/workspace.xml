@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d98c21cf-3ca2-4f7f-82d3-765f97934354" name="Default" comment="ajuste do css do tooltip">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -62,12 +63,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="css" value="1" />
+          <entry key="css" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="CSS" value="1" />
+          <entry key="CSS" value="4" />
         </counts>
       </usages-collector>
     </session>
@@ -86,8 +87,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/home.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1343">
-              <caret line="79" column="20" selection-start-line="79" selection-start-column="20" selection-end-line="79" selection-end-column="20" />
+            <state relative-caret-position="323">
+              <caret line="43" column="216" selection-start-line="43" selection-start-column="216" selection-end-line="43" selection-end-column="216" />
             </state>
           </provider>
         </entry>
@@ -127,8 +128,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/css/app.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="5323" column="11" selection-start-line="5323" selection-start-column="11" selection-end-line="5323" selection-end-column="11" />
+            <state relative-caret-position="385">
+              <caret line="1468" column="15" lean-forward="true" selection-start-line="1468" selection-start-column="15" selection-end-line="1468" selection-end-column="15" />
+              <folding>
+                <element signature="e#1057#1720#2" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -174,6 +178,7 @@
     </findStrings>
     <replaceStrings>
       <replace>10c413</replace>
+      <replace>ffcc00</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -190,8 +195,8 @@
         <option value="$PROJECT_DIR$/app/Forms/ProductForm.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/ProductController.php" />
         <option value="$PROJECT_DIR$/resources/views/welcome.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/home.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/layouts/app.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/home.blade.php" />
         <option value="$PROJECT_DIR$/public/css/app.css" />
       </list>
     </option>
@@ -396,7 +401,7 @@
       <workItem from="1541445583437" duration="3643000" />
       <workItem from="1541456545021" duration="121000" />
       <workItem from="1542391278729" duration="7883000" />
-      <workItem from="1542404882214" duration="20000" />
+      <workItem from="1542404882214" duration="461000" />
     </task>
     <task id="LOCAL-00001" summary="-- alterada tela de login do sistema">
       <created>1541444171643</created>
@@ -419,11 +424,25 @@
       <option name="project" value="LOCAL" />
       <updated>1542397530800</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="ajuste do css do tooltip">
+      <created>1542404953023</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1542404953023</updated>
+    </task>
+    <task id="LOCAL-00005" summary="ajuste do css do tooltip">
+      <created>1542405247271</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1542405247271</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14790000" />
+    <option name="totallyTimeSpent" value="15231000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -462,7 +481,8 @@
     <MESSAGE value="-- alterada tela de login do sistema" />
     <MESSAGE value="-- lapidando" />
     <MESSAGE value="-- validações de formulário corrgiidas" />
-    <option name="LAST_COMMIT_MESSAGE" value="-- validações de formulário corrgiidas" />
+    <MESSAGE value="ajuste do css do tooltip" />
+    <option name="LAST_COMMIT_MESSAGE" value="ajuste do css do tooltip" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/resources/assets/sass/app.scss">
@@ -540,13 +560,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/home.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1343">
-          <caret line="79" column="20" selection-start-line="79" selection-start-column="20" selection-end-line="79" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/Sell.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="578">
@@ -592,10 +605,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/home.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="43" column="216" selection-start-line="43" selection-start-column="216" selection-end-line="43" selection-end-column="216" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/public/css/app.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="5323" column="11" selection-start-line="5323" selection-start-column="11" selection-end-line="5323" selection-end-column="11" />
+        <state relative-caret-position="385">
+          <caret line="1468" column="15" lean-forward="true" selection-start-line="1468" selection-start-column="15" selection-end-line="1468" selection-end-column="15" />
+          <folding>
+            <element signature="e#1057#1720#2" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
