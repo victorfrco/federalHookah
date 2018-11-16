@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ 'MUT' }}</title>
+    <title>{{ 'Federal Hookah Pub' }}</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -17,7 +17,7 @@
 <body>
 <div id="app">
     @php
-        $logo = asset('storage/images/logo2.png');
+        $logo = asset('storage/images/brands/logo2.png');
         $navbar = Navbar::withBrandImage($logo, route('home'), config('app.name'))->inverse();
          if(Auth::check()){
             if(Auth::user()->name == 'ADMIN'){
