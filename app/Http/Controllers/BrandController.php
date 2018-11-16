@@ -82,6 +82,7 @@ class BrandController extends Controller
         $data = $form->getFieldValues();
         if($request->logo)
             $data['logo_path'] = 'storage/images/brands/'.$photoName;
+        $data['status'] = $data['status'] == null ? 0 : 1;
         Brand::create($data);
 
         $request->session()->flash('message', 'Marca cadastrada com sucesso!');
@@ -138,9 +139,16 @@ class BrandController extends Controller
 
         $data = $form->getFieldValues();
 	    if($data['logo'] != null) {
+//	        dd($data['logo']);
+            if($brand->logo_path == null){
+                $photoName = 'brand'.$brand->id.'.' . $data['logo']->getClientOriginalExtension();
+                $data['logo']->move( storage_path( 'app' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'brands' ), $photoName );
+                $brand->logo_path = 'storage/images/brands/'.$photoName;
+            }else
 			    $data['logo']->move( storage_path( 'app' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'brands' ), $brand->logo_path );
 	    }
         $data['status'] = $data['status'] == null ? 0 : 1;
+
         $brand->update($data);
 
         session()->flash('message', 'Marca alterada com sucesso!');

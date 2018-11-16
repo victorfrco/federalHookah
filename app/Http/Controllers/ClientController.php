@@ -83,7 +83,6 @@ class ClientController extends Controller
             'method' => 'PUT',
             'model' => $client
         ]);
-
         return view('admin.clients.edit', compact('form'));
     }
 

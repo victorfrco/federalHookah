@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Forms\ProductForm;
 use App\Models\Product;
+use App\Models\Sell;
 use function compact;
 use function dd;
 use Illuminate\Http\Request;
@@ -26,18 +27,18 @@ class ProductController extends Controller
 		return view('admin.products.stock', compact('products'));
 	}
 
-    public function addStock(Request $request)
-    {
-        $product = Product::find($request->toArray()['product_id']);
-        $product->qtd += $request->toArray()['product_qtd'];
-        $product->update();
+	public function addStock(Request $request)
+	{
+		$product = Product::find($request->toArray()['product_id']);
+		$product->qtd += $request->toArray()['product_qtd'];
+		$product->save();
 
-        $moveController = new MoveController();
-        $moveController->registraEntradaIndividual($product, $request->toArray()['product_qtd'], 1);
+		$moveController = new MoveController();
+		$moveController->registraEntradaIndividual($product, $request->toArray()['product_qtd'], 1);
 
-        $success = 'Produto adicionado ao estoque!';
-        return view('admin.products.stock', compact('success'));
-    }
+		$success = 'Produto adicionado ao estoque!';
+		return view('admin.products.stock', compact('success'));
+	}
 
     public function decreaseStock(Request $request)
     {
@@ -97,12 +98,26 @@ class ProductController extends Controller
         }
 
         $data = $form->getFieldValues();
-	    $source = array('.', ',');
-	    $replace = array('', '.');
-        $data['price_cost'] = str_replace($source, $replace, $data['price_cost']);
-        $data['price_resale'] = str_replace($source, $replace, $data['price_resale']);
-        $data['price_discount'] = str_replace($source, $replace, $data['price_discount']);
-        $data['price_card'] = str_replace($source, $replace, $data['price_card']);
+
+        $data['price_cost'] = Sell::converteMoedaParaDecimal($data['price_cost']);
+        $data['price_resale'] = Sell::converteMoedaParaDecimal($data['price_resale']);
+        $data['price_discount'] = Sell::converteMoedaParaDecimal($data['price_discount']);
+        $data['price_card'] = Sell::converteMoedaParaDecimal($data['price_card']);
+//	    $source = array('.', ',');
+//	    $replace = array('.', '.');
+//        $data['price_cost'] = str_replace($source, $replace, $data['price_cost']);
+//        $data['price_resale'] = str_replace($source, $replace, $data['price_resale']);
+//        $data['price_discount'] = str_replace($source, $replace, $data['price_discount']);
+//        $data['price_card'] = str_replace($source, $replace, $data['price_card']);
+        $data['status'] = $data['status'] == null ? 0 : 1;
+
+        $teste = DB::table('products')->where('barcode','=', $data['barcode'])->count('*');
+        if($teste > 0) {
+            session()->flash('message', 'Código de Barras já cadastrado em outro produto!');
+            return redirect()
+                ->back()
+                ->withInput();
+        }
 
         Product::create($data);
 
@@ -158,18 +173,22 @@ class ProductController extends Controller
                 ->withInput();
         }
 
-
         $data = $form->getFieldValues();
-	    $source = array('.', ',');
-	    $replace = array('.', '.');
-	    $data['price_cost'] = str_replace($source, $replace, $data['price_cost']);
-	    $data['price_resale'] = str_replace($source, $replace, $data['price_resale']);
-	    $data['price_discount'] = str_replace($source, $replace, $data['price_discount']);
-	    $data['price_card'] = str_replace($source, $replace, $data['price_card']);
+        $data['price_cost'] = Sell::converteMoedaParaDecimal($data['price_cost']);
+        $data['price_resale'] = Sell::converteMoedaParaDecimal($data['price_resale']);
+        $data['price_discount'] = Sell::converteMoedaParaDecimal($data['price_discount']);
+        $data['price_card'] = Sell::converteMoedaParaDecimal($data['price_card']);
         $data['status'] = $data['status'] == null ? 0 : 1;
 
-        $product->update($data);
+        $teste = DB::table('products')->where('barcode','=', $data['barcode'])->where('id', '<>',$product->id)->count('*');
+        if($teste > 0) {
+            session()->flash('message', 'Código de Barras já cadastrado em outro produto!');
+            return redirect()
+                ->back()
+                ->withInput();
+        }
 
+        $product->update($data);
         session()->flash('message', 'Produto alterado com sucesso!');
         return redirect()->route('admin.products.index');
     }
@@ -190,7 +209,7 @@ class ProductController extends Controller
     public function search(){
 	    $q = Input::get ( 'q' );
 	    if($q != ""){
-		    $products = Product::where ( 'name', 'LIKE', $q . '%' )->paginate (6)->setPath ( '' );
+		    $products = Product::where ( 'name', 'LIKE', '%'. $q . '%' )->orWhere('barcode', 'LIKE', '%'. $q . '%' )->paginate (6)->setPath ( '' );
 		    $pagination = $products->appends ( array (
 			    'q' => Input::get ( 'q' )
 		    ) );

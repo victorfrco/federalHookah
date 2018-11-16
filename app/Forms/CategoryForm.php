@@ -14,6 +14,6 @@ class CategoryForm extends Form
                 'rules' => 'required|max:255'
             ])
             ->add('description', 'text', ['label' => 'Descrição'])
-            ->add('status', 'checkbox', ['label' => 'Ativo']);
+            ->add('status','checkbox',['label' => 'Ativo']);
     }
 }

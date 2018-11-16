@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title titulo" id="titulo">Nova Mesa</h4>
+                <h4 class="modal-title titulo" id="titulo">Nova Venda</h4>
             </div>
             {!! Form::open(array('action' => 'SellController@criarMesa', 'method' => 'post')) !!}
 
@@ -28,7 +28,7 @@
                         echo Form::hidden('order_id', $order->id);
                 @endphp
 
-                {!! Form::submit('Criar Mesa!', array('class' => 'btn btn-success')) !!}
+                {!! Form::submit('Criar Venda!', array('class' => 'btn btn-success')) !!}
                 {!! Form::close() !!}
                 {!! Button::primary('Novo Cliente')->asLinkTo(route('admin.clients.create')) !!}
             </div>

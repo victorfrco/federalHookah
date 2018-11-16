@@ -10,7 +10,7 @@ class Client extends Model implements TableInterface
 {
     protected $table = 'clients';
     protected $fillable = ['name', 'nickname', 'phone1'
-        , 'email', 'cpf', 'obs', 'adr_street', 'adr_number'
+        , 'email', 'cpf', 'cnpj', 'obs', 'adr_street', 'adr_number'
         , 'adr_neighborhood', 'adr_cep', 'adr_compl'];
 
 
@@ -26,7 +26,7 @@ class Client extends Model implements TableInterface
      */
     public function getTableHeaders()
     {
-        return ['Id', 'Nome', 'Apelido', 'Telefone', 'Email', 'CPF'];
+        return ['Id', 'Nome', 'Apelido', 'Telefone', 'Email', 'CNPJ'];
     }
 
     /**
@@ -54,8 +54,8 @@ class Client extends Model implements TableInterface
             case 'Email':
                 return $this->email;
                 break;
-            case 'CPF':
-                return $this->cpf;
+            case 'CNPJ':
+                return $this->cnpj;
                 break;
         }
     }

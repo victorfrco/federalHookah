@@ -23,19 +23,19 @@ use function implode;
 class OrderController extends Controller
 {
     public function carregaPedidosAbertos(){
-        $pedidos = Order::all()->whereIn('status', [2,5]);
+        $pedidos = Order::all()->whereIn('status', [4,5])->where('type', '=', 1);
         $listaDeDivs = $this->criaListaPedidos($pedidos);
         return implode($listaDeDivs);
     }
 
     public function criaListaPedidos($pedidos){
         $lista =[];
-        $categories = category::all()->where('status', '=', 1);
+        $categories = Category::all()->where('status','=',1);
         foreach ($pedidos as $order) {
             $div = Button::primary($order->client->nickname)->withAttributes([
-                        'id' => $order->id,
-                        'style' =>
-                                   'width: auto;
+                'id' => $order->id,
+                'style' =>
+                    'min-width: 100px;
                                    height: 40px;
                                    font-size: 12px;
                                    font-weight:bold;
@@ -80,7 +80,7 @@ class OrderController extends Controller
 		if($subOrders != null && $subOrders->count() > 0){
 			foreach ($subOrders as $subOrder){
 				if($subOrder->pay_method == 4)
-					$total += $subOrder->total;
+					$total += $subOrder->debit + $subOrder->credit + $subOrder->money;
 			}
 		}
 		return $total;

@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ 'Federal Hookah Pub' }}</title>
+    <title>{{ 'MUT' }}</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -17,7 +17,7 @@
 <body>
 <div id="app">
     @php
-        $logo = asset('storage/images/brands/logo2.png');
+        $logo = asset('storage/images/logo2.png');
         $navbar = Navbar::withBrandImage($logo, route('home'), config('app.name'))->inverse();
          if(Auth::check()){
             if(Auth::user()->name == 'ADMIN'){
@@ -63,10 +63,13 @@
                 Icon::user().' '.Auth::user()->name,
                 [
                     [
-                            'link' => route('logout'),
-                            'title' => 'Logout &ensp;'.Icon::create('log-out'),
-                            'linkAttributes' => [
-                                'onclick' => "event.preventDefault();getElementById(\"form-logout\").submit();"
+                            'link' => route('admin.company.index'),
+                            'title' => 'Configurações '.Icon::create('cog')
+                            ]
+                            ,[
+                                'link' => route('logout'),
+                                'title' => 'Logout &ensp;'.Icon::create('log-out'),
+                                'linkAttributes' => ['onclick' => "event.preventDefault();getElementById(\"form-logout\").submit();"
                             ]
                         ]
                     ]

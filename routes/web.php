@@ -34,7 +34,7 @@ Route::post('/cancelarVenda', 'SellController@cancelarVenda');
 
 Route::get('/home/{id}', function($id){
     $order = Order::find($id);
-    $categories = category::all()->where('status', '=', 1);
+    $categories = Category::all()->where('status','=',1);
     return view('/home', compact('order', 'categories'));
 });
 
@@ -70,9 +70,10 @@ Route::prefix('admin')->group(function(){
         Route::resource('products','ProductController');
         Route::resource('clients','ClientController');
         Route::resource('sells', 'SellController');
-	    Route::resource('providers', 'ProviderController');
-	    Route::resource('bonifications', 'BonificationController');
-	    Route::resource('cashes', 'CashController');
+        Route::resource('providers', 'ProviderController');
+        Route::resource('bonifications', 'BonificationController');
+        Route::resource('cashes', 'CashController');
+        Route::resource('company', 'CompanyController');
     });
 });
 
@@ -82,5 +83,13 @@ Route::get('/historyDetail', 'OrderHistoryController@show')->name('historyDetail
 Route::get('/upload', 'BrandController@upload');
 Route::post('/move', 'BrandController@move')->name('move');
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/createDesk', 'DeskController@createDesk')->name('createDesk');
+Route::get('/produtosComCodigos', 'ReportController@produtosComCodigos')->name('produtosComCodigos');
 Route::post('/cashes', 'CashController@fecharCaixa')->name('fecharCaixa');
-Route::post('/auth', 'CashController@autenticar')->name('autenticar');
+Route::post('/novaEntrada', 'CashController@novaEntrada')->name('novaEntrada');
+Route::post('/novaSaida', 'CashController@novaSaida')->name('novaSaida');
+Route::post('/vincularMesa', 'DeskController@vincularMesa')->name('vincularMesa');
+Route::post('/criarMesaVenda', 'DeskController@criarMesaVenda')->name('criarMesaVenda');
+Route::post('/excluirMesa', 'DeskController@excluirMesa')->name('excluirMesa');
+Route::post('/imprimirCupom', 'SellController@imprimirCupom')->name('imprimirCupom');
+Route::post('/dadosEmpresa', 'CompanyController@atualizar')->name('dadosEmpresa');

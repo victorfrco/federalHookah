@@ -1,12 +1,12 @@
 <div data-keyboard="false" data-backdrop="static" class="modal fade" id="productModal" tabindex="-1" >
     <div class="modal-dialog" style="width: 800px">
-        <div class="modal-content">
+        <div class="modal-content" style=" ">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title titulo" id="titulo"></h4>
             </div>
             {!! Form::open(array('action' => 'SellController@addProducts', 'method' => 'post')) !!}
-            <div class="modal-body task" id="task" >
+            <div class="modal-body task" id="task" style="overflow-y: auto;max-height: 450px">
             </div>
             <div class="modal-footer">
                 @php

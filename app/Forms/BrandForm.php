@@ -24,9 +24,8 @@ class BrandForm extends Form
                     // If query builder option is not provided, all data is fetched
                     return $category;
                 }
-	        ])->add('logo','file', [
+            ])->add('logo','file', [
 		        'label' => 'Logo'
-	        ])
-            ->add('status', 'checkbox', ['label' => 'Ativo']);
+	        ])->add('status','checkbox',['label' => 'Ativo']);
     }
 }
